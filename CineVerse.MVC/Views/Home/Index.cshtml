@@ -1,0 +1,205 @@
+@*
+    GEÇİCİ TASARIM ÖNİZLEMESİ
+    Bu sayfadaki bütün veriler örnek (sabit) veridir; veritabanından gelmiyor.
+    Amaç, tasarımın nasıl göründüğünü şimdiden görmek. Ana sayfayı gerçek
+    verilerle (MovieService, ViewComponent'ler) yazdığımızda bu dosyayı
+    baştan yazacağız.
+*@
+@{
+    ViewData["Title"] = "Ana Sayfa";
+
+    var heroMovies = new[]
+    {
+        new { Title = "Inception", Year = 2010, Genre = "Bilim Kurgu", Director = "Christopher Nolan",
+              Overview = "Rüyaların içine girip fikir çalabilen bir ekip, bu kez imkânsız bir görev üstlenir: bir fikri çalmak yerine zihne yerleştirmek.", Fallback = "hero-fallback-1" },
+        new { Title = "Spirited Away", Year = 2001, Genre = "Animasyon", Director = "Hayao Miyazaki",
+              Overview = "Ailesiyle birlikte gizemli bir dünyaya adım atan küçük Chihiro, ruhların hamamında çalışarak ailesini kurtarmanın yolunu arar.", Fallback = "hero-fallback-2" },
+        new { Title = "Whiplash", Year = 2014, Genre = "Dram", Director = "Damien Chazelle",
+              Overview = "Genç bir caz davulcusu, öğrencilerini sınırlarının ötesine zorlayan acımasız bir hocanın elinde mükemmelliğin bedelini öğrenir.", Fallback = "hero-fallback-3" }
+    };
+
+    var sampleMovies = new[]
+    {
+        new { Title = "Inception", Year = 2010, Genre = "Bilim Kurgu", Rating = 4.7 },
+        new { Title = "The Godfather", Year = 1972, Genre = "Suç", Rating = 4.9 },
+        new { Title = "Spirited Away", Year = 2001, Genre = "Animasyon", Rating = 4.8 },
+        new { Title = "Parasite", Year = 2019, Genre = "Gerilim", Rating = 4.6 },
+        new { Title = "Interstellar", Year = 2014, Genre = "Bilim Kurgu", Rating = 4.5 },
+        new { Title = "Whiplash", Year = 2014, Genre = "Dram", Rating = 4.4 }
+    };
+
+    var sampleReviews = new[]
+    {
+        new { User = "sinefil34", Rating = 5, Date = "2 gün önce", Body = "Her izleyişte yeni bir detay yakalıyorum. Müzikleri ve kurgusu kusursuz." },
+        new { User = "filmgurusu", Rating = 4, Date = "1 hafta önce", Body = "Son yarım saat biraz uzun ama genel olarak çok keyifli bir film." }
+    };
+
+    var sampleGenres = new[] { ("Bilim Kurgu", 12), ("Dram", 9), ("Animasyon", 6), ("Gerilim", 5), ("Suç", 4) };
+    var sampleTags = new[] { "Nolan", "Oscar", "Klasik", "Zihin Bükücü", "Aile", "Müzik" };
+}
+
+@section Hero {
+    <section class="cv-hero">
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                @for (var i = 0; i < heroMovies.Length; i++)
+                {
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i"
+                            class="@(i == 0 ? "active" : "")" aria-label="Slayt @(i + 1)"></button>
+                }
+            </div>
+            <div class="carousel-inner">
+                @for (var i = 0; i < heroMovies.Length; i++)
+                {
+                    var movie = heroMovies[i];
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <div class="hero-slide @movie.Fallback"></div>
+                        <div class="hero-content">
+                            <div class="container">
+                                <div>
+                                    <span class="hero-kicker"><i class="bi bi-fire"></i>En çok konuşulan</span>
+                                    <h1 class="hero-title">@movie.Title</h1>
+                                    <div class="hero-meta">
+                                        <span><i class="bi bi-calendar3 me-1"></i>@movie.Year</span>
+                                        <span><i class="bi bi-camera-reels me-1"></i>@movie.Director</span>
+                                        <span class="chip chip-accent">@movie.Genre</span>
+                                    </div>
+                                    <p class="hero-overview">@movie.Overview</p>
+                                    <a href="#" class="btn btn-accent px-4">
+                                        <i class="bi bi-play-fill me-1"></i>İncele
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<div class="cv-alert cv-alert-info">
+    <i class="bi bi-palette"></i>Bu sayfa bir tasarım önizlemesidir. Gösterilen veriler örnektir.
+</div>
+
+<div class="row g-4 g-xl-5">
+    <div class="col-lg-8">
+        <section class="mb-5">
+            <div class="section-title">
+                <h2>Popüler Filmler</h2>
+                <a href="#">Tümünü gör <i class="bi bi-arrow-right"></i></a>
+            </div>
+
+            <div class="row row-cols-2 row-cols-md-3 g-3 g-md-4">
+                @foreach (var movie in sampleMovies)
+                {
+                    <div class="col">
+                        <article class="movie-card">
+                            <a href="#" class="movie-card-link">
+                                <div class="movie-poster">
+                                    <div class="poster-placeholder"><i class="bi bi-film"></i></div>
+                                    <span class="movie-rating"><i class="bi bi-star-fill"></i>@movie.Rating.ToString("0.0")</span>
+                                </div>
+                                <div class="movie-card-body">
+                                    <h3 class="movie-title">@movie.Title</h3>
+                                    <p class="movie-meta">@movie.Year · @movie.Genre</p>
+                                </div>
+                            </a>
+                        </article>
+                    </div>
+                }
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title">
+                <h2>Son Yorumlar</h2>
+            </div>
+
+            <div class="cv-panel">
+                @foreach (var review in sampleReviews)
+                {
+                    <div class="review">
+                        <span class="cv-avatar">@review.User.Substring(0, 1)</span>
+                        <div class="flex-grow-1">
+                            <div class="review-head">
+                                <strong>@review.User</strong>
+                                <span class="stars">
+                                    @for (var s = 1; s <= 5; s++)
+                                    {
+                                        <i class="bi @(s <= review.Rating ? "bi-star-fill" : "bi-star")"></i>
+                                    }
+                                </span>
+                                <time>@review.Date</time>
+                            </div>
+                            <p class="review-body">@review.Body</p>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="cv-panel mt-4">
+                <h3 class="cv-panel-title">Yorum Yaz</h3>
+                <form onsubmit="return false;">
+                    <div class="mb-3">
+                        <span class="form-label d-block mb-1">Puanın</span>
+                        <div class="star-input">
+                            @for (var s = 5; s >= 1; s--)
+                            {
+                                <input type="radio" id="preview-star-@s" name="preview-rating" value="@s" />
+                                <label for="preview-star-@s" title="@s yıldız"><i class="bi bi-star-fill"></i></label>
+                            }
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="preview-body">Yorumun</label>
+                        <textarea id="preview-body" class="form-control" rows="3" placeholder="Film hakkında ne düşünüyorsun?"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-accent">Gönder</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <aside class="col-lg-4">
+        <div class="cv-panel">
+            <h3 class="cv-panel-title">Son Eklenenler</h3>
+            <ul class="mini-list">
+                @foreach (var movie in sampleMovies.Take(3))
+                {
+                    <li>
+                        <a href="#" class="mini-item">
+                            <span class="mini-thumb"><span class="poster-placeholder"><i class="bi bi-film"></i></span></span>
+                            <span>
+                                <strong>@movie.Title</strong>
+                                <small>@movie.Year · @movie.Genre</small>
+                            </span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="cv-panel">
+            <h3 class="cv-panel-title">Türler</h3>
+            <ul class="link-list">
+                @foreach (var (name, count) in sampleGenres)
+                {
+                    <li>
+                        <a href="#"><span>@name</span><span class="text-muted-cv">@count</span></a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="cv-panel">
+            <h3 class="cv-panel-title">Etiketler</h3>
+            <div class="chip-list">
+                @foreach (var tag in sampleTags)
+                {
+                    <a href="#" class="chip"><i class="bi bi-hash"></i>@tag</a>
+                }
+            </div>
+        </div>
+    </aside>
+</div>

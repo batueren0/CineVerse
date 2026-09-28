@@ -1,0 +1,825 @@
+/* ==========================================================================
+   CineVerse - Site Teması
+   Koyu, sinema salonu hissi veren bir tema. Bootstrap 5.3 üzerine kurulu.
+   Renkler ve ölçüler en üstte "değişken" (CSS custom property) olarak
+   tanımlı; bir rengi değiştirmek istersen sadece burayı değiştirmen yeterli.
+   ========================================================================== */
+
+:root {
+    /* --- Renk paleti --- */
+    --cv-bg: #0d0f14;            /* sayfa arka planı */
+    --cv-surface: #151923;       /* kartlar, paneller */
+    --cv-surface-2: #1c2230;     /* kartların içindeki ikinci katman, input'lar */
+    --cv-border: #262d3d;        /* ince çizgiler */
+    --cv-text: #e7e9ee;          /* ana metin */
+    --cv-muted: #8f98ab;         /* ikincil metin (yıl, tarih vb.) */
+    --cv-accent: #f5a524;        /* vurgu rengi: projektör ışığı sarısı */
+    --cv-accent-hover: #ffb84a;
+    --cv-accent-ink: #1a1204;    /* vurgu renginin üstündeki yazı rengi */
+    --cv-danger: #e2475b;
+
+    /* --- Yazı tipleri --- */
+    --cv-font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+    --cv-font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    /* --- Ölçüler --- */
+    --cv-radius: 12px;
+    --cv-radius-sm: 8px;
+    --cv-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+
+    /* --- Bootstrap'in kendi değişkenlerini temamıza bağlıyoruz --- */
+    --bs-body-bg: var(--cv-bg);
+    --bs-body-color: var(--cv-text);
+    --bs-body-font-family: var(--cv-font-body);
+    --bs-border-color: var(--cv-border);
+    --bs-secondary-color: var(--cv-muted);
+    --bs-link-color-rgb: 245, 165, 36;
+    --bs-link-hover-color-rgb: 255, 184, 74;
+}
+
+[data-bs-theme="dark"] {
+    --bs-body-bg: var(--cv-bg);
+    --bs-body-color: var(--cv-text);
+    --bs-tertiary-bg: var(--cv-surface);
+    --bs-secondary-bg: var(--cv-surface-2);
+    --bs-border-color: var(--cv-border);
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--cv-bg);
+    color: var(--cv-text);
+    font-family: var(--cv-font-body);
+}
+
+a {
+    text-decoration: none;
+}
+
+::selection {
+    background: var(--cv-accent);
+    color: var(--cv-accent-ink);
+}
+
+:focus-visible {
+    outline: 2px solid var(--cv-accent);
+    outline-offset: 2px;
+}
+
+.text-muted-cv {
+    color: var(--cv-muted) !important;
+}
+
+/* ==========================================================================
+   Butonlar
+   ========================================================================== */
+
+.btn-accent {
+    --bs-btn-color: var(--cv-accent-ink);
+    --bs-btn-bg: var(--cv-accent);
+    --bs-btn-border-color: var(--cv-accent);
+    --bs-btn-hover-color: var(--cv-accent-ink);
+    --bs-btn-hover-bg: var(--cv-accent-hover);
+    --bs-btn-hover-border-color: var(--cv-accent-hover);
+    --bs-btn-active-color: var(--cv-accent-ink);
+    --bs-btn-active-bg: var(--cv-accent-hover);
+    --bs-btn-active-border-color: var(--cv-accent-hover);
+    font-weight: 600;
+}
+
+.btn-ghost {
+    --bs-btn-color: var(--cv-text);
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: var(--cv-border);
+    --bs-btn-hover-color: var(--cv-text);
+    --bs-btn-hover-bg: var(--cv-surface-2);
+    --bs-btn-hover-border-color: var(--cv-muted);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Üst menü (header / navbar)
+   ========================================================================== */
+
+.cv-header {
+    background: rgba(13, 15, 20, .85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--cv-border);
+}
+
+.cv-header .navbar {
+    padding-block: .75rem;
+}
+
+.cv-brand {
+    font-family: var(--cv-font-display);
+    font-size: 2rem;
+    letter-spacing: .04em;
+    line-height: 1;
+    color: var(--cv-text) !important;
+}
+
+.cv-brand i {
+    color: var(--cv-accent);
+    font-size: 1.5rem;
+    vertical-align: .15em;
+    margin-right: .25rem;
+}
+
+.cv-brand span {
+    color: var(--cv-accent);
+}
+
+.cv-header .nav-link {
+    color: var(--cv-muted);
+    font-weight: 500;
+    transition: color .15s ease;
+}
+
+.cv-header .nav-link:hover,
+.cv-header .nav-link.active {
+    color: var(--cv-text);
+}
+
+.cv-header .nav-link.active {
+    color: var(--cv-accent);
+}
+
+/* Geniş ekranda aktif menü linkinin altına ince bir çizgi */
+@media (min-width: 992px) {
+    .cv-header .nav-link.active {
+        color: var(--cv-text);
+        box-shadow: inset 0 -2px 0 var(--cv-accent);
+    }
+}
+
+.cv-header .dropdown-menu {
+    background: var(--cv-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: var(--cv-radius-sm);
+    box-shadow: var(--cv-shadow);
+}
+
+.cv-header .dropdown-item {
+    color: var(--cv-text);
+}
+
+.cv-header .dropdown-item:hover,
+.cv-header .dropdown-item:focus {
+    background: var(--cv-surface-2);
+    color: var(--cv-accent);
+}
+
+.cv-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-grid;
+    place-items: center;
+    background: var(--cv-accent);
+    color: var(--cv-accent-ink);
+    font-weight: 700;
+    font-size: .85rem;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Ana içerik ve bölüm başlıkları
+   ========================================================================== */
+
+.cv-main {
+    flex: 1;
+    padding-block: 2.5rem 4rem;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.section-title h2 {
+    font-family: var(--cv-font-display);
+    font-size: 2rem;
+    letter-spacing: .03em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+}
+
+.section-title h2::before {
+    content: "";
+    width: 4px;
+    height: 1.4rem;
+    border-radius: 2px;
+    background: var(--cv-accent);
+}
+
+.section-title a {
+    color: var(--cv-muted);
+    font-size: .9rem;
+}
+
+.section-title a:hover {
+    color: var(--cv-accent);
+}
+
+.page-heading {
+    font-family: var(--cv-font-display);
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    letter-spacing: .03em;
+    line-height: 1;
+    margin-bottom: .5rem;
+}
+
+/* ==========================================================================
+   Vitrin (ana sayfadaki büyük kayan alan / carousel)
+   ========================================================================== */
+
+.cv-hero {
+    position: relative;
+}
+
+.cv-hero .carousel-item {
+    height: clamp(360px, 55vh, 520px);
+}
+
+.hero-slide {
+    position: relative;
+    height: 100%;
+    background-color: var(--cv-surface);
+    background-size: cover;
+    background-position: center 25%;
+}
+
+/* Afişin üstüne karartma: yazıların okunabilmesi için */
+.hero-slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(13, 15, 20, .95) 0%, rgba(13, 15, 20, .65) 45%, rgba(13, 15, 20, .2) 100%),
+        linear-gradient(0deg, var(--cv-bg) 0%, transparent 40%);
+}
+
+/* Afişi olmayan filmler için renkli yedek arka planlar */
+.hero-slide.hero-fallback-1 { background-image: radial-gradient(circle at 75% 30%, #3b2a12 0%, #151923 60%); }
+.hero-slide.hero-fallback-2 { background-image: radial-gradient(circle at 75% 30%, #122a3b 0%, #151923 60%); }
+.hero-slide.hero-fallback-3 { background-image: radial-gradient(circle at 75% 30%, #3b1224 0%, #151923 60%); }
+
+.hero-content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content .container > div {
+    max-width: 560px;
+}
+
+.hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    color: var(--cv-accent);
+    font-weight: 600;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: .75rem;
+}
+
+.hero-title {
+    font-family: var(--cv-font-display);
+    font-size: clamp(2.8rem, 7vw, 4.8rem);
+    line-height: .95;
+    letter-spacing: .02em;
+    margin-bottom: .75rem;
+}
+
+.hero-meta {
+    color: var(--cv-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.hero-overview {
+    color: #c9cedb;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.cv-hero .carousel-indicators [data-bs-target] {
+    width: 28px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--cv-text);
+}
+
+.cv-hero .carousel-indicators .active {
+    background-color: var(--cv-accent);
+}
+
+/* ==========================================================================
+   Film kartı (listelerde tekrar tekrar kullanılan afiş kartı)
+   ========================================================================== */
+
+.movie-card {
+    height: 100%;
+}
+
+.movie-card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: var(--cv-text);
+}
+
+.movie-poster {
+    position: relative;
+    aspect-ratio: 2 / 3;               /* standart film afişi oranı */
+    border-radius: var(--cv-radius);
+    overflow: hidden;
+    background: var(--cv-surface-2);
+    border: 1px solid var(--cv-border);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.movie-card-link:hover .movie-poster {
+    transform: translateY(-4px);
+    box-shadow: var(--cv-shadow);
+    border-color: var(--cv-accent);
+}
+
+/* Afişi olmayan film için yer tutucu */
+.poster-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(160deg, #1f2636 0%, #121620 100%);
+    color: #3a4357;
+    font-size: 2.75rem;
+}
+
+.movie-rating {
+    position: absolute;
+    top: .5rem;
+    left: .5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    padding: .2rem .5rem;
+    border-radius: 999px;
+    background: rgba(13, 15, 20, .85);
+    color: var(--cv-accent);
+    font-size: .8rem;
+    font-weight: 700;
+}
+
+.movie-card-body {
+    padding-top: .65rem;
+}
+
+.movie-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 .15rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.movie-card-link:hover .movie-title {
+    color: var(--cv-accent);
+}
+
+.movie-meta {
+    color: var(--cv-muted);
+    font-size: .85rem;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Etiket / tür çipleri ve yıldız puanı
+   ========================================================================== */
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .3rem .75rem;
+    border-radius: 999px;
+    background: var(--cv-surface-2);
+    border: 1px solid var(--cv-border);
+    color: var(--cv-text);
+    font-size: .85rem;
+    font-weight: 500;
+    transition: border-color .15s ease, color .15s ease;
+}
+
+a.chip:hover {
+    border-color: var(--cv-accent);
+    color: var(--cv-accent);
+}
+
+.chip-accent {
+    background: rgba(245, 165, 36, .12);
+    border-color: rgba(245, 165, 36, .4);
+    color: var(--cv-accent);
+}
+
+.chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.stars {
+    color: var(--cv-accent);
+    letter-spacing: .05em;
+    white-space: nowrap;
+}
+
+.stars .bi-star {
+    color: #3a4357;
+}
+
+/* ==========================================================================
+   Paneller: kenar çubuğu kutuları, yorumlar, formlar için ortak kart
+   ========================================================================== */
+
+.cv-panel {
+    background: var(--cv-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: var(--cv-radius);
+    padding: 1.25rem;
+}
+
+.cv-panel + .cv-panel {
+    margin-top: 1.25rem;
+}
+
+.cv-panel-title {
+    font-family: var(--cv-font-display);
+    font-size: 1.4rem;
+    letter-spacing: .03em;
+    margin-bottom: 1rem;
+    padding-bottom: .6rem;
+    border-bottom: 1px solid var(--cv-border);
+}
+
+/* Kenar çubuğundaki küçük film listesi */
+.mini-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: .9rem;
+}
+
+.mini-item {
+    display: flex;
+    gap: .75rem;
+    align-items: center;
+    color: var(--cv-text);
+}
+
+.mini-thumb {
+    width: 46px;
+    aspect-ratio: 2 / 3;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--cv-surface-2);
+}
+
+.mini-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mini-thumb .poster-placeholder {
+    font-size: 1rem;
+}
+
+.mini-item strong {
+    display: block;
+    font-size: .92rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.mini-item:hover strong {
+    color: var(--cv-accent);
+}
+
+.mini-item small {
+    color: var(--cv-muted);
+}
+
+/* Tür listesi (kenar çubuğu) */
+.link-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.link-list a {
+    display: flex;
+    justify-content: space-between;
+    padding: .5rem 0;
+    color: var(--cv-text);
+    border-bottom: 1px dashed var(--cv-border);
+}
+
+.link-list li:last-child a {
+    border-bottom: 0;
+}
+
+.link-list a:hover {
+    color: var(--cv-accent);
+}
+
+/* ==========================================================================
+   Film detay sayfası
+   ========================================================================== */
+
+.detail-header {
+    position: relative;
+    margin-bottom: 2.5rem;
+}
+
+.detail-poster {
+    border-radius: var(--cv-radius);
+    overflow: hidden;
+    aspect-ratio: 2 / 3;
+    border: 1px solid var(--cv-border);
+    box-shadow: var(--cv-shadow);
+    background: var(--cv-surface-2);
+}
+
+.detail-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.5rem;
+    color: var(--cv-muted);
+    margin-bottom: 1.25rem;
+}
+
+.detail-facts strong {
+    color: var(--cv-text);
+    font-weight: 600;
+}
+
+.detail-overview {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #c9cedb;
+}
+
+/* ==========================================================================
+   Yorumlar
+   ========================================================================== */
+
+.review {
+    display: flex;
+    gap: .9rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--cv-border);
+}
+
+.review:last-child {
+    border-bottom: 0;
+}
+
+.review-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .25rem .75rem;
+    margin-bottom: .35rem;
+}
+
+.review-head strong {
+    font-weight: 600;
+}
+
+.review-head time {
+    color: var(--cv-muted);
+    font-size: .85rem;
+}
+
+.review-body {
+    margin: 0;
+    color: #c9cedb;
+    white-space: pre-line;
+}
+
+/* Yıldız seçerek puan verme (sadece CSS ile, JavaScript yok).
+   HTML'de radyo butonları 5'ten 1'e ters sırada yazılır;
+   flex-direction: row-reverse onları görsel olarak düzeltir. */
+.star-input {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    gap: .15rem;
+}
+
+.star-input input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.star-input label {
+    font-size: 1.6rem;
+    color: #3a4357;
+    cursor: pointer;
+    transition: color .1s ease, transform .1s ease;
+}
+
+.star-input label:hover,
+.star-input label:hover ~ label,
+.star-input input:checked ~ label {
+    color: var(--cv-accent);
+}
+
+.star-input label:hover {
+    transform: scale(1.1);
+}
+
+.star-input input:focus-visible + label {
+    outline: 2px solid var(--cv-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ==========================================================================
+   Formlar (giriş, kayıt, yorum yazma)
+   ========================================================================== */
+
+.form-control,
+.form-select {
+    background-color: var(--cv-surface-2);
+    border-color: var(--cv-border);
+    color: var(--cv-text);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--cv-surface-2);
+    border-color: var(--cv-accent);
+    color: var(--cv-text);
+    box-shadow: 0 0 0 .2rem rgba(245, 165, 36, .2);
+}
+
+.form-control::placeholder {
+    color: #5d667a;
+}
+
+.form-label {
+    font-weight: 500;
+    font-size: .92rem;
+}
+
+.field-validation-error,
+.validation-summary-errors {
+    color: var(--cv-danger);
+    font-size: .85rem;
+}
+
+.validation-summary-errors ul {
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+.auth-card {
+    max-width: 440px;
+    margin: 1rem auto 0;
+    background: var(--cv-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: var(--cv-radius);
+    padding: 2rem;
+    box-shadow: var(--cv-shadow);
+}
+
+.auth-card .page-heading {
+    text-align: center;
+}
+
+/* ==========================================================================
+   Bildirimler (TempData ile gelen başarı / hata mesajları)
+   ========================================================================== */
+
+.cv-alert {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    border-radius: var(--cv-radius-sm);
+    border: 1px solid;
+    padding: .8rem 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.cv-alert-success {
+    background: rgba(46, 160, 94, .12);
+    border-color: rgba(46, 160, 94, .45);
+    color: #7ad7a0;
+}
+
+.cv-alert-error {
+    background: rgba(226, 71, 91, .12);
+    border-color: rgba(226, 71, 91, .45);
+    color: #f08a98;
+}
+
+.cv-alert-info {
+    background: rgba(245, 165, 36, .08);
+    border-color: rgba(245, 165, 36, .35);
+    color: var(--cv-accent);
+}
+
+/* ==========================================================================
+   Boş durum (listede hiç kayıt yokken)
+   ========================================================================== */
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--cv-muted);
+    border: 1px dashed var(--cv-border);
+    border-radius: var(--cv-radius);
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: .75rem;
+    color: #3a4357;
+}
+
+/* ==========================================================================
+   Alt bilgi (footer)
+   ========================================================================== */
+
+.cv-footer {
+    border-top: 1px solid var(--cv-border);
+    background: #0a0c10;
+    padding-block: 2rem;
+    color: var(--cv-muted);
+    font-size: .9rem;
+}
+
+.cv-footer .cv-brand {
+    font-size: 1.5rem;
+}
+
+.cv-footer a {
+    color: var(--cv-muted);
+}
+
+.cv-footer a:hover {
+    color: var(--cv-accent);
+}
+
+/* ==========================================================================
+   Hareketi azaltmak isteyen kullanıcılar için animasyonları kapat
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}
