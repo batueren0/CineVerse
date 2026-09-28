@@ -1,6 +1,7 @@
 @{
     var pageTitle = ViewData["Title"] as string;
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
     var userName = User.Identity?.Name ?? string.Empty;
     var userInitial = userName.Length > 0 ? userName.Substring(0, 1) : "?";
 }
@@ -24,7 +25,7 @@
     <header class="cv-header sticky-top">
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <a class="navbar-brand cv-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand cv-brand" lang="en" asp-area="" asp-controller="Home" asp-action="Index">
                     <i class="bi bi-film"></i>Cine<span>Verse</span>
                 </a>
 
@@ -38,6 +39,14 @@
                         <li class="nav-item">
                             <a class="nav-link @(currentController == "Home" ? "active" : "")"
                                asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Movies" && currentAction == "Index" ? "active" : "")"
+                               asp-area="" asp-controller="Movies" asp-action="Index">Filmler</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Movies" && currentAction == "InTheaters" ? "active" : "")"
+                               asp-area="" asp-controller="Movies" asp-action="InTheaters">Vizyondakiler</a>
                         </li>
                         @* İleride buraya "Türler" açılır menüsü gelecek (ViewComponent ile). *@
                     </ul>
@@ -108,7 +117,7 @@
 
     <footer class="cv-footer">
         <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
-            <a class="cv-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <a class="cv-brand" lang="en" asp-area="" asp-controller="Home" asp-action="Index">
                 <i class="bi bi-film"></i>Cine<span>Verse</span>
             </a>
             <p class="m-0">&copy; @DateTime.Now.Year CineVerse · Film severler için inceleme platformu</p>
