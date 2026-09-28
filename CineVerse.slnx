@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CineVerse.Application/CineVerse.Application.csproj" />
+  <Project Path="CineVerse.Domain/CineVerse.Domain.csproj" />
+  <Project Path="CineVerse.Infrastructure/CineVerse.Infrastructure.csproj" />
+  <Project Path="CineVerse.MVC/CineVerse.MVC.csproj" />
+</Solution>

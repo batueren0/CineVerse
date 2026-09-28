@@ -1,0 +1,36 @@
+# ---- Derleme çıktıları ----
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# ---- Visual Studio dosyaları ----
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ---- EF Core / veritabanı (yerel) ----
+*.mdf
+*.ldf
+*.ndf
+
+# ---- appsettings içindeki gizli/yerel ayarlar ----
+appsettings.Local.json
+secrets.json
+
+# ---- Test sonuçları ----
+[Tt]est[Rr]esult*/
+*.trx
+
+# ---- NuGet ----
+*.nupkg
+**/packages/*
+!**/packages/build/
+
+# ---- Rider / VS Code (varsa) ----
+.idea/
+.vscode/
