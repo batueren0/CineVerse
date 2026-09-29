@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var sections = new[]
+    {
+        new { Controller = "Movies",  Icon = "bi-film",             Title = "Movies",  Text = "Add movies, upload posters and mark what's in theaters." },
+        new { Controller = "Genres",  Icon = "bi-collection",       Title = "Genres",  Text = "Manage the genres movies are grouped under." },
+        new { Controller = "Tags",    Icon = "bi-tags",             Title = "Tags",    Text = "Manage tags like directors, awards or themes." },
+        new { Controller = "Reviews", Icon = "bi-chat-square-text", Title = "Reviews", Text = "Moderate the reviews written by users." }
+    };
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>Dashboard</h1>
+        <p>Welcome back, @User.Identity?.Name. What would you like to manage today?</p>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3 g-lg-4">
+    @foreach (var item in sections)
+    {
+        <div class="col">
+            <a class="quick-card" asp-area="Administrator" asp-controller="@item.Controller" asp-action="Index">
+                <span class="quick-card-icon"><i class="bi @item.Icon"></i></span>
+                <h2>@item.Title</h2>
+                <p>@item.Text</p>
+                <span class="quick-card-link">Open <i class="bi bi-arrow-right"></i></span>
+            </a>
+        </div>
+    }
+</div>

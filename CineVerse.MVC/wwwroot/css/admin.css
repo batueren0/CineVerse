@@ -1,0 +1,368 @@
+/* ==========================================================================
+   CineVerse - Yönetim Paneli
+   site.css'teki renk değişkenlerini (--cv-...) kullanır; bu dosya sadece
+   panele özel düzeni (yan menü, üst çubuk, tablolar) ekler.
+   ========================================================================== */
+
+.admin-body {
+    min-height: 100vh;
+    display: block;
+}
+
+.admin-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   Yan menü (sidebar)
+   Geniş ekranda sabit bir sütun, küçük ekranda Bootstrap "offcanvas"
+   ile soldan açılan bir panel. (offcanvas-lg sınıfı bunu JS yazmadan sağlar.)
+   ========================================================================== */
+
+.admin-sidebar {
+    --bs-offcanvas-width: 260px;
+    --bs-offcanvas-bg: var(--cv-surface);
+    --bs-offcanvas-color: var(--cv-text);
+}
+
+.admin-sidebar-inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: var(--cv-surface);
+}
+
+@media (min-width: 992px) {
+    .admin-sidebar {
+        width: 260px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        border-right: 1px solid var(--cv-border);
+    }
+}
+
+.admin-brand {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    height: 68px;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid var(--cv-border);
+}
+
+.admin-brand .cv-brand {
+    font-size: 1.7rem;
+}
+
+.admin-brand small {
+    color: var(--cv-muted);
+    font-size: .7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    padding: .15rem .45rem;
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+}
+
+.admin-nav {
+    flex: 1;
+    padding: 1rem .75rem;
+    overflow-y: auto;
+}
+
+.admin-nav-title {
+    color: #5d667a;
+    font-size: .7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    padding: .75rem .75rem .4rem;
+}
+
+.admin-nav a {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .6rem .75rem;
+    margin-bottom: .15rem;
+    border-radius: var(--cv-radius-sm);
+    color: var(--cv-muted);
+    font-weight: 500;
+    transition: background .15s ease, color .15s ease;
+}
+
+.admin-nav a i {
+    font-size: 1.1rem;
+    width: 1.25rem;
+    text-align: center;
+}
+
+.admin-nav a:hover {
+    background: var(--cv-surface-2);
+    color: var(--cv-text);
+}
+
+.admin-nav a.active {
+    background: rgba(245, 165, 36, .12);
+    color: var(--cv-accent);
+}
+
+.admin-sidebar-footer {
+    padding: .75rem;
+    border-top: 1px solid var(--cv-border);
+}
+
+/* ==========================================================================
+   Sağ taraf: üst çubuk ve içerik
+   ========================================================================== */
+
+.admin-main {
+    flex: 1;
+    min-width: 0;              /* geniş tabloların taşmasını engeller */
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-topbar {
+    height: 68px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--cv-border);
+    background: rgba(13, 15, 20, .85);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.admin-user {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    line-height: 1.2;
+}
+
+.admin-user small {
+    display: block;
+    color: var(--cv-muted);
+    font-size: .75rem;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 2rem 1.5rem 3rem;
+}
+
+@media (min-width: 1200px) {
+    .admin-content {
+        padding-inline: 2.5rem;
+    }
+}
+
+/* Sayfa başlığı + sağında işlem butonları */
+.admin-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-page-header h1 {
+    font-family: var(--cv-font-display);
+    font-size: 2.4rem;
+    letter-spacing: .03em;
+    line-height: 1;
+    margin: 0;
+}
+
+.admin-page-header p {
+    color: var(--cv-muted);
+    margin: .35rem 0 0;
+}
+
+.breadcrumb-lite {
+    color: var(--cv-muted);
+    font-size: .85rem;
+    margin-bottom: .35rem;
+}
+
+.breadcrumb-lite a {
+    color: var(--cv-muted);
+}
+
+.breadcrumb-lite a:hover {
+    color: var(--cv-accent);
+}
+
+/* ==========================================================================
+   Tablolar
+   ========================================================================== */
+
+.admin-table-wrap {
+    background: var(--cv-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: var(--cv-radius);
+    overflow: hidden;
+}
+
+.admin-table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--cv-text);
+    --bs-table-border-color: var(--cv-border);
+    --bs-table-hover-bg: var(--cv-surface-2);
+    --bs-table-hover-color: var(--cv-text);
+    margin: 0;
+}
+
+.admin-table thead th {
+    color: var(--cv-muted);
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    background: #121620;
+    padding: .85rem 1rem;
+    white-space: nowrap;
+}
+
+.admin-table td {
+    padding: .85rem 1rem;
+    vertical-align: middle;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.admin-table code {
+    color: var(--cv-muted);
+    font-size: .85rem;
+}
+
+/* Satır sonundaki işlem butonları */
+.row-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .4rem;
+}
+
+.row-actions form {
+    margin: 0;
+}
+
+.btn-icon {
+    --bs-btn-padding-x: .55rem;
+    --bs-btn-padding-y: .3rem;
+    --bs-btn-font-size: .85rem;
+}
+
+.btn-danger-soft {
+    --bs-btn-color: #f08a98;
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: rgba(226, 71, 91, .4);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--cv-danger);
+    --bs-btn-hover-border-color: var(--cv-danger);
+    --bs-btn-active-bg: var(--cv-danger);
+    --bs-btn-active-border-color: var(--cv-danger);
+}
+
+/* Tablodaki küçük afiş */
+.table-thumb {
+    width: 40px;
+    aspect-ratio: 2 / 3;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--cv-surface-2);
+    flex-shrink: 0;
+}
+
+.table-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.table-thumb .poster-placeholder {
+    font-size: .9rem;
+}
+
+/* ==========================================================================
+   Formlar
+   ========================================================================== */
+
+.admin-form {
+    max-width: 720px;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    padding-top: 1.25rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--cv-border);
+}
+
+/* ==========================================================================
+   Panel ana sayfası: hızlı erişim kartları
+   ========================================================================== */
+
+.quick-card {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    height: 100%;
+    padding: 1.35rem;
+    background: var(--cv-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: var(--cv-radius);
+    color: var(--cv-text);
+    transition: border-color .15s ease, transform .15s ease;
+}
+
+.quick-card:hover {
+    border-color: var(--cv-accent);
+    transform: translateY(-2px);
+    color: var(--cv-text);
+}
+
+.quick-card-icon {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(245, 165, 36, .12);
+    color: var(--cv-accent);
+    font-size: 1.3rem;
+}
+
+.quick-card h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.quick-card p {
+    color: var(--cv-muted);
+    font-size: .9rem;
+    margin: 0;
+}
+
+.quick-card-link {
+    margin-top: auto;
+    color: var(--cv-accent);
+    font-size: .88rem;
+    font-weight: 500;
+}

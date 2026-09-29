@@ -20,9 +20,9 @@ public class UpdateGenreValidator : AbstractValidator<UpdateGenreRequest>
             .WithMessage("This genre already exists");
     }
 
-    private async Task<bool> BeAnUniqueName(string name , CancellationToken cancellationToken)
+    private async Task<bool> BeAnUniqueName(UpdateGenreRequest request,string name , CancellationToken cancellationToken)
     {
-        if (await _uow.Genres.AnyByNameAsync(name))
+        if (await _uow.Genres.AnyByNameAsync(name, request.Id))
             return false;
 
         return true;

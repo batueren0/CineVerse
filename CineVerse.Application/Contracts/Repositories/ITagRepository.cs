@@ -8,5 +8,5 @@ namespace CineVerse.Application.Contracts.Repositories;
 
 public interface ITagRepository : IRepository<Tag>
 {
-    Task<bool> AnyByNameAsync(string name);
+    Task<bool> AnyByNameAsync(string name, Guid? excludeId = null);
 }

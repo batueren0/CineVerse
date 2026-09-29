@@ -22,9 +22,9 @@ public class UpdateTagValidator : AbstractValidator<UpdateTagRequest>
             .WithMessage("This tag already exists");
     }
 
-    private async Task<bool> BeAnUniqueName(string name, CancellationToken cancellationToken)
+    private async Task<bool> BeAnUniqueName(UpdateTagRequest request ,string name, CancellationToken cancellationToken)
     {
-        if (await _uow.Tags.AnyByNameAsync(name))
+        if (await _uow.Tags.AnyByNameAsync(name, request.Id))
             return false;
 
         return true;

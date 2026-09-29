@@ -8,5 +8,5 @@ namespace CineVerse.Application.Contracts.Repositories;
 
 public interface IGenreRepository : IRepository<Genre>
 {
-    Task<bool> AnyByNameAsync(string name);
+    Task<bool> AnyByNameAsync(string name, Guid? excludeId = null);
 }

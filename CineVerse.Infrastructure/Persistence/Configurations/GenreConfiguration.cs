@@ -1,4 +1,5 @@
 ﻿using CineVerse.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,10 @@ public class GenreConfiguration : BaseEntityConfiguration<Genre>
             .IsRequired()
             .HasMaxLength(100);
         builder.HasIndex(x => x.Name)
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("[IsActive] = 1");
         builder.HasIndex(x => x.Slug)
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("[IsActive] = 1");
     }
 }

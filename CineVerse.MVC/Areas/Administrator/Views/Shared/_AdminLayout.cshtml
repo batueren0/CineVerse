@@ -1,0 +1,112 @@
+@{
+    var pageTitle = ViewData["Title"] as string;
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var userName = User.Identity?.Name ?? string.Empty;
+    var userInitial = userName.Length > 0 ? userName.Substring(0, 1) : "?";
+    var userRole = User.IsInRole(Roles.Admin) ? "Admin" : "Editor";
+
+    // Menüdeki linki "aktif" göstermek için küçük bir yardımcı
+    string Active(string controller) => currentController == controller ? "active" : "";
+}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@(string.IsNullOrWhiteSpace(pageTitle) ? "Admin · CineVerse" : $"{pageTitle} · Admin · CineVerse")</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body class="admin-body">
+    <div class="admin-shell">
+
+        <aside class="admin-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="adminSidebar" aria-label="Admin menu">
+            <div class="admin-sidebar-inner">
+                <div class="admin-brand">
+                    <a class="cv-brand" lang="en" asp-area="Administrator" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-film"></i>Cine<span>Verse</span>
+                    </a>
+                    <small>Admin</small>
+                    <button type="button" class="btn-close ms-auto d-lg-none" data-bs-dismiss="offcanvas"
+                            data-bs-target="#adminSidebar" aria-label="Close"></button>
+                </div>
+
+                <nav class="admin-nav">
+                    <a class="@Active("Home")" asp-area="Administrator" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-grid-1x2"></i>Dashboard
+                    </a>
+
+                    <div class="admin-nav-title">Catalog</div>
+                    <a class="@Active("Movies")" asp-area="Administrator" asp-controller="Movies" asp-action="Index">
+                        <i class="bi bi-film"></i>Movies
+                    </a>
+                    <a class="@Active("Genres")" asp-area="Administrator" asp-controller="Genres" asp-action="Index">
+                        <i class="bi bi-collection"></i>Genres
+                    </a>
+                    <a class="@Active("Tags")" asp-area="Administrator" asp-controller="Tags" asp-action="Index">
+                        <i class="bi bi-tags"></i>Tags
+                    </a>
+
+                    <div class="admin-nav-title">Community</div>
+                    <a class="@Active("Reviews")" asp-area="Administrator" asp-controller="Reviews" asp-action="Index">
+                        <i class="bi bi-chat-square-text"></i>Reviews
+                    </a>
+                </nav>
+
+                <div class="admin-sidebar-footer admin-nav p-2">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-box-arrow-up-right"></i>Back to site
+                    </a>
+                    <a asp-area="" asp-controller="Account" asp-action="Logout">
+                        <i class="bi bi-box-arrow-right"></i>Log out
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <button class="btn btn-ghost d-lg-none" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#adminSidebar" aria-controls="adminSidebar" aria-label="Open menu">
+                    <i class="bi bi-list fs-5"></i>
+                </button>
+
+                <div class="admin-user">
+                    <span class="cv-avatar">@userInitial</span>
+                    <span>
+                        <strong>@userName</strong>
+                        <small>@userRole</small>
+                    </span>
+                </div>
+            </header>
+
+            <main class="admin-content">
+                @if (TempData["Success"] is string successMessage)
+                {
+                    <div class="cv-alert cv-alert-success" role="status">
+                        <i class="bi bi-check-circle-fill"></i>@successMessage
+                    </div>
+                }
+                @if (TempData["Error"] is string errorMessage)
+                {
+                    <div class="cv-alert cv-alert-error" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill"></i>@errorMessage
+                    </div>
+                }
+
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

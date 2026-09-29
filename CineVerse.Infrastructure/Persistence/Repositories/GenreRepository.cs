@@ -15,8 +15,8 @@ public class GenreRepository : Repository<Genre>, IGenreRepository
         _context = context;
     }
 
-    public async Task<bool> AnyByNameAsync(string name)
+    public async Task<bool> AnyByNameAsync(string name, Guid? excludeId = null)
     {
-        return await _context.Genres.AnyAsync(g => g.Name == name);
+        return await _context.Genres.AnyAsync(g => g.Name == name && (excludeId == null || g.Id != excludeId));
     }
 }

@@ -7,12 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CineVerse.Infrastructure\CineVerse.Infrastructure.csproj" />
+    <Compile Remove="Areas\Administrator\Data\**" />
+    <Compile Remove="Areas\Administrator\Models\**" />
+    <Content Remove="Areas\Administrator\Data\**" />
+    <Content Remove="Areas\Administrator\Models\**" />
+    <EmbeddedResource Remove="Areas\Administrator\Data\**" />
+    <EmbeddedResource Remove="Areas\Administrator\Models\**" />
+    <None Remove="Areas\Administrator\Data\**" />
+    <None Remove="Areas\Administrator\Models\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Administrator\Data\" />
-    <Folder Include="Areas\Administrator\Models\" />
+    <ProjectReference Include="..\CineVerse.Infrastructure\CineVerse.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

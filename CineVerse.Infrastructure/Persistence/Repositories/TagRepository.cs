@@ -15,8 +15,8 @@ public class TagRepository : Repository<Tag> , ITagRepository
         _context = context;
     }
 
-    public async Task<bool> AnyByNameAsync(string name)
+    public async Task<bool> AnyByNameAsync(string name, Guid? excludeId = null)
     {
-        return await _context.Tags.AnyAsync(t => t.Name == name);
+        return await _context.Tags.AnyAsync(t => t.Name == name && (excludeId == null || t.Id != excludeId));
     }
 }

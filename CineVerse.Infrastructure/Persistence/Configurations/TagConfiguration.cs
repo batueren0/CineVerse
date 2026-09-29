@@ -1,5 +1,6 @@
 ﻿
 using CineVerse.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CineVerse.Infrastructure.Persistence.Configurations;
@@ -15,8 +16,10 @@ public class TagConfiguration : BaseEntityConfiguration<Tag>
             .IsRequired()
             .HasMaxLength(100);
         builder.HasIndex(x => x.Name)
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("[IsActive] = 1");
         builder.HasIndex(x => x.Slug)
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("[IsActive] = 1");
     }
 }

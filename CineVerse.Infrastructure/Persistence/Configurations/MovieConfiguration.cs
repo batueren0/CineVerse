@@ -1,5 +1,6 @@
 ﻿
 using CineVerse.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CineVerse.Infrastructure.Persistence.Configurations;
@@ -25,9 +26,11 @@ public class MovieConfiguration : BaseEntityConfiguration<Movie>
         builder.Property(x => x.Overview)
             .IsRequired();
         builder.HasIndex(x => x.Title)
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("[IsActive] = 1");
         builder.HasIndex(x => x.Slug)
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("[IsActive] = 1");
 
         builder.HasOne(m => m.Genre)
             .WithMany(g => g.Movies)

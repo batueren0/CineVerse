@@ -1,0 +1,62 @@
+@model IEnumerable<GenreResponse>
+@{
+    ViewData["Title"] = "Genres";
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>Genres</h1>
+        <p>Movies are grouped under these genres on the site.</p>
+    </div>
+    <a class="btn btn-accent" asp-area="Administrator" asp-controller="Genres" asp-action="Create">
+        <i class="bi bi-plus-lg me-1"></i>New Genre
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <i class="bi bi-collection"></i>
+        No genres yet. Create the first one to get started.
+    </div>
+}
+else
+{
+    <div class="admin-table-wrap">
+        <div class="table-responsive">
+            <table class="table admin-table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var genre in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@genre.Name</td>
+                            <td><code>@genre.Slug</code></td>
+                            <td>
+                                <div class="row-actions">
+                                    <a class="btn btn-ghost btn-icon" title="Edit"
+                                       asp-area="Administrator" asp-controller="Genres" asp-action="Update" asp-route-id="@genre.Id">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    @* Silme işlemi bir link değil, POST ile gönderilen küçük bir form *@
+                                    <form asp-area="Administrator" asp-controller="Genres" asp-action="Delete" asp-route-id="@genre.Id" method="post"
+                                          onsubmit="return confirm('Delete the genre &quot;@genre.Name&quot;?');">
+                                        <button type="submit" class="btn btn-danger-soft btn-icon" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

@@ -54,7 +54,7 @@ namespace CineVerse.MVC.Controllers
             if (returnUrl is not null)
                 TempData["ReturnUrl"] = returnUrl;
             else
-                TempData.Remove(returnUrl!);
+                TempData.Remove("ReturnUrl");
 
             return View();
         }
