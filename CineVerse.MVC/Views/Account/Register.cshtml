@@ -1,0 +1,60 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="auth-card" style="max-width: 560px;">
+    <h1 class="page-heading">Sign Up</h1>
+    <p class="text-center text-muted-cv mb-4">Join CineVerse to rate and review the movies you watch.</p>
+
+    <form asp-controller="Account" asp-action="Register" method="post">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+                <label asp-for="FirstName" class="form-label">First name</label>
+                <input asp-for="FirstName" class="form-control" autocomplete="given-name" />
+                <span asp-validation-for="FirstName"></span>
+            </div>
+            <div class="col-sm-6">
+                <label asp-for="LastName" class="form-label">Last name</label>
+                <input asp-for="LastName" class="form-control" autocomplete="family-name" />
+                <span asp-validation-for="LastName"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="UserName" class="form-label">Username</label>
+            <input asp-for="UserName" class="form-control" placeholder="e.g. cinephile34" autocomplete="username" />
+            <div class="form-text text-muted-cv">Shown on your reviews. Use English letters, numbers and - . _ only.</div>
+            <span asp-validation-for="UserName"></span>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+                <label asp-for="DoB" class="form-label">Date of birth</label>
+                <input asp-for="DoB" type="date" class="form-control" />
+                <span asp-validation-for="DoB"></span>
+            </div>
+            <div class="col-sm-6">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-control" autocomplete="email" />
+                <span asp-validation-for="Email"></span>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Password" class="form-label">Password</label>
+            <input asp-for="Password" type="password" class="form-control" autocomplete="new-password" />
+            <div class="form-text text-muted-cv">At least 6 characters, including an uppercase letter, a lowercase letter, a number and a symbol (e.g. !, @@, #).</div>
+            <span asp-validation-for="Password"></span>
+        </div>
+
+        <button type="submit" class="btn btn-accent w-100 py-2">Create Account</button>
+    </form>
+
+    <p class="text-center text-muted-cv mt-4 mb-0">
+        Already have an account?
+        <a asp-controller="Account" asp-action="Login">Log in</a>
+    </p>
+</div>

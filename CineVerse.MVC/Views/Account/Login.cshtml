@@ -1,0 +1,38 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Log In";
+}
+
+<div class="auth-card">
+    <h1 class="page-heading">Log In</h1>
+    <p class="text-center text-muted-cv mb-4">Log in to rate movies and write reviews.</p>
+
+    <form asp-controller="Account" asp-action="Login" method="post">
+        @* Controller'da ModelState.AddModelError(string.Empty, ...) ile eklenen genel hatalar burada görünür *@
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" type="email" class="form-control" placeholder="you@example.com" autocomplete="email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label">Password</label>
+            <input asp-for="Password" type="password" class="form-control" autocomplete="current-password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+
+        <div class="mb-4 form-check">
+            <input asp-for="RememberMe" class="form-check-input" />
+            <label asp-for="RememberMe" class="form-check-label">Remember me</label>
+        </div>
+
+        <button type="submit" class="btn btn-accent w-100 py-2">Log In</button>
+    </form>
+
+    <p class="text-center text-muted-cv mt-4 mb-0">
+        Don't have an account?
+        <a asp-controller="Account" asp-action="Register">Sign up</a>
+    </p>
+</div>
