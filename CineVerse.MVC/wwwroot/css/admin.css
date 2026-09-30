@@ -478,3 +478,25 @@
     background: var(--cv-danger);
     color: #fff;
 }
+
+/* ==========================================================================
+   Yorumlar tablosu
+   ========================================================================== */
+
+.cv-avatar-sm {
+    width: 26px;
+    height: 26px;
+    font-size: .75rem;
+}
+
+.review-excerpt {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 420px;
+    min-width: 220px;
+    margin: 0;
+    color: var(--cv-muted);
+    font-size: .9rem;
+}

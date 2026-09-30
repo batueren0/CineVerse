@@ -1,0 +1,75 @@
+@model IEnumerable<ReviewResponse>
+@{
+    ViewData["Title"] = "Reviews";
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>Reviews</h1>
+        <p>Reviews written by users. Remove anything that breaks the rules.</p>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <i class="bi bi-chat-square-text"></i>
+        No reviews yet. They will appear here once users start writing them.
+    </div>
+}
+else
+{
+    <div class="admin-table-wrap">
+        <div class="table-responsive">
+            <table class="table admin-table table-hover">
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>User</th>
+                        <th>Rating</th>
+                        <th>Review</th>
+                        <th>Date</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var review in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold text-nowrap">@review.MovieTitle</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2 text-nowrap">
+                                    <span class="cv-avatar cv-avatar-sm">@(review.UserName.Length > 0 ? review.UserName.Substring(0, 1) : "?")</span>
+                                    @review.UserName
+                                </div>
+                            </td>
+                            <td>
+                                <span class="stars text-nowrap" title="@review.Rating / 5">
+                                    @for (var s = 1; s <= 5; s++)
+                                    {
+                                        <i class="bi @(s <= review.Rating ? "bi-star-fill" : "bi-star")"></i>
+                                    }
+                                </span>
+                            </td>
+                            <td>
+                                @* Uzun yorumlar tabloyu bozmasın diye 2 satırda kesiliyor; tamamı üstüne gelince görünüyor *@
+                                <p class="review-excerpt" title="@review.Body">@review.Body</p>
+                            </td>
+                            <td class="text-muted-cv text-nowrap">@review.CreatedOn.ToLocalTime().ToString("dd MMM yyyy")</td>
+                            <td>
+                                <div class="row-actions">
+                                    <form asp-area="Administrator" asp-controller="Reviews" asp-action="Delete" asp-route-id="@review.Id" method="post"
+                                          onsubmit="return confirm('Delete this review by &quot;@review.UserName&quot;?');">
+                                        <button type="submit" class="btn btn-danger-soft btn-icon" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

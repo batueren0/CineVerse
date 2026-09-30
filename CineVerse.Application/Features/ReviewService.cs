@@ -4,8 +4,6 @@ using CineVerse.Application.DTOs.Requests;
 using CineVerse.Application.DTOs.Responses;
 using CineVerse.Domain.Entities;
 using FluentValidation;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 
 namespace CineVerse.Application.Features;
 
@@ -54,11 +52,13 @@ public class ReviewService(IUnitOfWork uow,
         var reviews = await uow.Reviews.GetAllAsync();
 
         return reviews.Select(r => new ReviewResponse(
-            r.Id,
-            r.User?.UserName ?? string.Empty,
-            r.Rating,
-            r.Body,
-            r.CreatedOn
-            ));
+             r.Id,
+             r.MovieId,
+             r.Movie?.Title ?? string.Empty,
+             r.User?.UserName ?? string.Empty,
+             r.Rating,
+             r.Body,
+             r.CreatedOn
+             ));
     }
 }

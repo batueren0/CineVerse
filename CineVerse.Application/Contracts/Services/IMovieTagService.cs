@@ -7,5 +7,5 @@ namespace CineVerse.Application.Contracts.Services;
 public interface IMovieTagService
 {
     Task<Result> CreateAsync(CreateMovieTagRequest request);
-    Task<Result> DeleteAsync(Guid movieId, Guid id);
+    Task<Result> DeleteAsync(Guid movieId, Guid tagId);
 }

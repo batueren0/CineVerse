@@ -15,5 +15,6 @@ public interface IMovieRepository : IRepository<Movie>
     Task<IEnumerable<Movie>> GetAllByTagIdAsync(Guid id);
     Task<IEnumerable<Movie>> GetInTheatersAsync();
     Task<Movie?> GetByIdForUpdateAsync(Guid id);
+    Task<bool> AnyByGenreIdAsync(Guid genreId);
 
 }

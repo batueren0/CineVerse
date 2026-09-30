@@ -151,6 +151,8 @@ public class MovieService(IUnitOfWork uow,
                 )),
             movie.Reviews.Select(r => new ReviewResponse(
                 r.Id,
+                movie.Id,
+                movie.Title,
                 r.User != null ? r.User.UserName ?? string.Empty :
                     string.Empty,
                     r.Rating,

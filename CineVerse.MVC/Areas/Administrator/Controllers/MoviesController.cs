@@ -1,7 +1,6 @@
 ﻿using CineVerse.Application.Common;
 using CineVerse.Application.Contracts.Services;
 using CineVerse.Application.DTOs.Requests;
-using CineVerse.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

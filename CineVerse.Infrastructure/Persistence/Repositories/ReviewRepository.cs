@@ -20,6 +20,7 @@ public class ReviewRepository : Repository<Review> , IReviewRepository
         return await _context.Reviews
             .AsNoTracking()
             .Include(r => r.User)
+            .Include(r => r.Movie)
             .OrderByDescending(r => r.CreatedOn)
             .ToListAsync();
     }

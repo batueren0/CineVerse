@@ -89,4 +89,9 @@ public class MovieRepository : Repository<Movie>, IMovieRepository
     {
         return await base.GetByIdAsync(id);
     }
+
+    public async Task<bool> AnyByGenreIdAsync(Guid genreId)
+    {
+        return await _context.Movies.AnyAsync(m => m.GenreId == genreId);
+    }
 }

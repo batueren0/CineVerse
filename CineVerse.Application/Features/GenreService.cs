@@ -55,6 +55,9 @@ public class GenreService(
         var genre = await uow.Genres.GetByIdAsync(id);
         if (genre is null)
             return Result.Failure("Genre not found");
+
+        if (await uow.Movies.AnyByGenreIdAsync(id))
+            return Result.Failure("This genre has movies. Move them to another genre before deleting it.");
         
         genre.IsActive = false;
         genre.DeletedOn = DateTime.UtcNow;
