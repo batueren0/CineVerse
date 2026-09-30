@@ -44,7 +44,7 @@ public class MovieService(IUnitOfWork uow,
             return Result.Failure(string.Join(",", validationResult.Errors.Select(e => e.ErrorMessage)));
 
 
-        var movie = await uow.Movies.GetByIdAsync(request.Id);
+        var movie = await uow.Movies.GetByIdForUpdateAsync(request.Id);
         if (movie == null)
             return Result.Failure("Movie was not found");
 
@@ -66,7 +66,7 @@ public class MovieService(IUnitOfWork uow,
 
     public async Task<Result> DeleteAsync(Guid id)
     {
-        var movie = await uow.Movies.GetByIdAsync(id);
+        var movie = await uow.Movies.GetByIdForUpdateAsync(id);
         if(movie is null)
             return Result.Failure($"{nameof(Movie)} does not exist");
         

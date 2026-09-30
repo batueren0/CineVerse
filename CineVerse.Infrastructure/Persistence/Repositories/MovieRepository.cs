@@ -84,4 +84,9 @@ public class MovieRepository : Repository<Movie>, IMovieRepository
             .OrderByDescending(m => m.CreatedOn)
             .ToListAsync();
     }
+
+    public async Task<Movie?> GetByIdForUpdateAsync(Guid id)
+    {
+        return await base.GetByIdAsync(id);
+    }
 }
