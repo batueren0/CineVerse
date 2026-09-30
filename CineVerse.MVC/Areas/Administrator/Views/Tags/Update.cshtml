@@ -1,0 +1,32 @@
+@model UpdateTagRequest
+@{
+    ViewData["Title"] = "Edit Tag";
+}
+
+<div class="admin-page-header">
+    <div>
+        <div class="breadcrumb-lite">
+            <a asp-area="Administrator" asp-controller="Tags" asp-action="Index">Tags</a> / Edit
+        </div>
+        <h1>Edit Tag</h1>
+    </div>
+</div>
+
+<div class="cv-panel admin-form">
+    <form asp-area="Administrator" asp-controller="Tags" asp-action="Update" method="post">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        @* Hangi kaydı güncellediğimizi formla birlikte göndermek için gizli alan *@
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Name</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-accent"><i class="bi bi-check-lg me-1"></i>Save Changes</button>
+            <a class="btn btn-ghost" asp-area="Administrator" asp-controller="Tags" asp-action="Index">Cancel</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,30 @@
+@model CreateTagRequest
+@{
+    ViewData["Title"] = "New Tag";
+}
+
+<div class="admin-page-header">
+    <div>
+        <div class="breadcrumb-lite">
+            <a asp-area="Administrator" asp-controller="Tags" asp-action="Index">Tags</a> / New
+        </div>
+        <h1>New Tag</h1>
+    </div>
+</div>
+
+<div class="cv-panel admin-form">
+    <form asp-area="Administrator" asp-controller="Tags" asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Name</label>
+            <input asp-for="Name" class="form-control" placeholder="e.g. Oscar Winner" autofocus />
+            <div class="form-text text-muted-cv">The URL slug is generated automatically from the name.</div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-accent"><i class="bi bi-check-lg me-1"></i>Create</button>
+            <a class="btn btn-ghost" asp-area="Administrator" asp-controller="Tags" asp-action="Index">Cancel</a>
+        </div>
+    </form>
+</div>
