@@ -7,8 +7,10 @@ namespace CineVerse.Application.Validators;
 
 public class UpdateMovieValidator : AbstractValidator<UpdateMovieRequest>
 {
-    public UpdateMovieValidator()
+    private readonly IUnitOfWork _uow;
+    public UpdateMovieValidator(IUnitOfWork uow)
     {
+        _uow = uow;
 
         RuleFor(x => x.Id)
             .NotEmpty();
@@ -17,7 +19,9 @@ public class UpdateMovieValidator : AbstractValidator<UpdateMovieRequest>
 
         RuleFor(x => x.Title)
             .NotEmpty()
-            .Length(2, 256);
+            .Length(2, 256)
+            .MustAsync(BeAnUniqueTitle)
+            .WithMessage("This movie has already added");
 
         RuleFor(x => x.Director)
             .NotEmpty()
@@ -29,5 +33,14 @@ public class UpdateMovieValidator : AbstractValidator<UpdateMovieRequest>
         RuleFor(x => x.Overview)
             .NotEmpty()
             .MinimumLength(50);
+
+    }
+
+    private async Task<bool> BeAnUniqueTitle(UpdateMovieRequest request, string title , CancellationToken cancellationToken)
+    {
+        if (await _uow.Movies.AnyByTitleAsync(title, request.Id))
+            return false;
+
+        return true;
     }
 }

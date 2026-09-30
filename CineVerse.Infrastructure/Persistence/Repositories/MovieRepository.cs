@@ -27,9 +27,9 @@ public class MovieRepository : Repository<Movie>, IMovieRepository
                 .ThenInclude(r => r.User);
     }
 
-    public async Task<bool> AnyByTitleAsync(string title)
+    public async Task<bool> AnyByTitleAsync(string title, Guid? excludeId = null)
     {
-        return await _context.Movies.AnyAsync(m => m.Title == title);
+        return await _context.Movies.AnyAsync(m => m.Title == title && (excludeId == null || m.Id != excludeId));
     }
 
     public override async Task<IEnumerable<Movie>> GetAllAsync()
@@ -74,6 +74,14 @@ public class MovieRepository : Repository<Movie>, IMovieRepository
         return await MoviesWithDetails()
             .OrderByDescending(m => m.CreatedOn)
             .Take(3)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Movie>> GetInTheaterAsync()
+    {
+        return await MoviesWithDetails()
+            .Where(m => m.IsInTheaters)
+            .OrderByDescending(m => m.CreatedOn)
             .ToListAsync();
     }
 }

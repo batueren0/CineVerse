@@ -28,6 +28,7 @@ public class MovieService(IUnitOfWork uow,
             ReleaseYear = request.ReleaseYear,
             PosterUrl = request.PosterUrl,
             Overview = request.Overview,
+            IsInTheaters = request.IsInTheaters,
         };
 
         await uow.Movies.AddAsync(movie);
@@ -54,6 +55,7 @@ public class MovieService(IUnitOfWork uow,
         movie.ReleaseYear = request.ReleaseYear;
         movie.PosterUrl = request.PosterUrl;
         movie.Overview = request.Overview;
+        movie.IsInTheaters = request.IsInTheaters;
         movie.LastModifiedOn = DateTimeOffset.UtcNow;
 
         uow.Movies.Update(movie);
@@ -119,6 +121,12 @@ public class MovieService(IUnitOfWork uow,
         return movies.Select(ToResponse);
     }
 
+    public async Task<IEnumerable<MovieResponse>> GetInTheaters()
+    {
+        var movies = await uow.Movies.GetInTheaterAsync();
+        return movies.Select(ToResponse);
+    }
+
     private static MovieResponse ToResponse(Movie movie)
     {
         return new MovieResponse
@@ -130,6 +138,7 @@ public class MovieService(IUnitOfWork uow,
             movie.ReleaseYear,
             movie.PosterUrl,
             movie.Overview,
+            movie.IsInTheaters,
             movie.LastModifiedOn,
             new GenreResponse(
                 Id: movie.Genre!.Id,

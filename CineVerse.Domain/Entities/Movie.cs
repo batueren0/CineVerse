@@ -12,6 +12,7 @@ public class Movie : BaseEntity
     public int ReleaseYear { get; set; }
     public string? PosterUrl { get; set; }
     public string Overview { get; set; } = string.Empty;
+    public bool IsInTheaters { get; set; }
     public ICollection<Review> Reviews { get; set; } = [];
     public ICollection<MovieTag> Tags { get; set; } = [];
 }

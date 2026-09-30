@@ -23,6 +23,8 @@ public class MovieConfiguration : BaseEntityConfiguration<Movie>
         builder.Property(x => x.PosterUrl)
             .IsRequired(false)
             .HasMaxLength(512);
+        builder.Property(x => x.IsInTheaters)
+            .IsRequired();
         builder.Property(x => x.Overview)
             .IsRequired();
         builder.HasIndex(x => x.Title)

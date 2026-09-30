@@ -12,6 +12,7 @@ public sealed record MovieResponse(
     int ReleaseYear,
     string? PosterUrl,
     string Overview,
+    bool IsInTheater,
     DateTimeOffset LastModifiedAt,
     GenreResponse Genre,
     IEnumerable<TagResponse> Tags,

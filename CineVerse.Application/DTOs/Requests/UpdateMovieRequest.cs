@@ -8,5 +8,6 @@ public sealed record UpdateMovieRequest(
     string Director,
     int ReleaseYear,
     string? PosterUrl,
-    string Overview
+    string Overview,
+    bool IsInTheaters
     );

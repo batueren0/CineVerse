@@ -8,10 +8,11 @@ namespace CineVerse.Application.Contracts.Repositories;
 
 public interface IMovieRepository : IRepository<Movie>
 {
-    Task<bool> AnyByTitleAsync(string title);
+    Task<bool> AnyByTitleAsync(string title, Guid? excludeId = null);
     Task<IEnumerable<Movie>> GetCarouselAsync();
     Task<IEnumerable<Movie>> GetRecentAsync();
     Task<IEnumerable<Movie>> GetAllByGenreIdAsync(Guid id);
     Task<IEnumerable<Movie>> GetAllByTagIdAsync(Guid id);
+    Task<IEnumerable<Movie>> GetInTheaterAsync();
 
 }
