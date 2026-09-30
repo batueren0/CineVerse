@@ -54,6 +54,15 @@ else
                                     <div>
                                         <div class="fw-semibold">@movie.Title</div>
                                         <small class="text-muted-cv">@movie.Director</small>
+                                        @if (movie.Tags.Any())
+                                        {
+                                            <div class="table-tags">
+                                                @foreach (var tag in movie.Tags)
+                                                {
+                                                    <span>#@tag.Name</span>
+                                                }
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </td>
@@ -72,6 +81,10 @@ else
                             <td class="text-center">@movie.Reviews.Count()</td>
                             <td>
                                 <div class="row-actions">
+                                    <a class="btn btn-ghost btn-icon" title="Tags"
+                                       asp-area="Administrator" asp-controller="Movies" asp-action="Tags" asp-route-id="@movie.Id">
+                                        <i class="bi bi-tags"></i>
+                                    </a>
                                     <a class="btn btn-ghost btn-icon" title="Edit"
                                        asp-area="Administrator" asp-controller="Movies" asp-action="Update" asp-route-id="@movie.Id">
                                         <i class="bi bi-pencil"></i>

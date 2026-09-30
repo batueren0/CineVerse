@@ -1,6 +1,7 @@
 ﻿using CineVerse.Application.Common;
 using CineVerse.Application.Contracts.Services;
 using CineVerse.Application.DTOs.Requests;
+using CineVerse.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,8 @@ namespace CineVerse.MVC.Areas.Administrator.Controllers;
 public class MoviesController(
     IMovieService movieService,
     IGenreService genreService,
+    ITagService tagService,
+    IMovieTagService movieTagService,
     IWebHostEnvironment environment
     ) : Controller
 {
@@ -127,6 +130,56 @@ public class MoviesController(
 
         return RedirectToAction(nameof(Index));
     }
+
+    public async Task<IActionResult> Tags(Guid id)
+    {
+        var movie = await movieService.GetByIdAsync(id);
+        if(movie is null)
+        {
+            TempData["Error"] = "Movie not found.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Dropdownda sadece filme eklemeyenleri görmek için
+        var allTags = await tagService.GetAllAsync();
+        var movieTagIds = movie.Tags.Select(t => t.Id).ToList();
+
+        ViewBag.AvailableTags = allTags
+            .Where(t => !movieTagIds.Contains(t.Id))
+            .Select(t => new SelectListItem(t.Name, t.Id.ToString()));
+
+        return View(movie);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddTag(Guid movieId , Guid tagId)
+    {
+        var result = await movieTagService.CreateAsync(new CreateMovieTagRequest(movieId, tagId));
+        if (result.IsSuccess)
+            TempData["Success"] = "Tag has been added.";
+        else
+            TempData["Error"] = result.ErrorMessage;
+
+        return RedirectToAction(nameof(Tags), new {id = movieId});
+    }
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RemoveTag(Guid movieId, Guid tagId)
+    {
+        var result = await movieTagService.DeleteAsync(movieId, tagId);
+        if (result.IsSuccess)
+            TempData["Success"] = "Tag has been removed.";
+        else
+            TempData["Error"] = result.ErrorMessage;
+
+        return RedirectToAction(nameof(Tags), new { id = movieId });
+    }
+
+
+
 
 
     // Dropdown için liste

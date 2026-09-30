@@ -8,4 +8,6 @@ namespace CineVerse.Application.Contracts.Repositories;
 
 public interface IMovieTagRepository : IRepository<MovieTag>
 {
+    Task<bool> AnyAsync(Guid movieId, Guid tagId);
+    Task<MovieTag?> GetByMovieAndTagAsync(Guid movieId, Guid tagId);
 }

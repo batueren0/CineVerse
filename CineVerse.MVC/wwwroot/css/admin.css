@@ -437,3 +437,44 @@
     font-size: .85rem;
     font-weight: 500;
 }
+
+/* ==========================================================================
+   Film tag'leri
+   ========================================================================== */
+
+.table-thumb-lg {
+    width: 96px;
+}
+
+.table-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .15rem .5rem;
+    margin-top: .2rem;
+    font-size: .75rem;
+    color: var(--cv-accent);
+}
+
+.chip-removable {
+    padding-right: .35rem;
+}
+
+.chip-remove {
+    display: grid;
+    place-items: center;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-left: .15rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--cv-muted);
+    font-size: .7rem;
+    transition: background .15s ease, color .15s ease;
+}
+
+.chip-remove:hover {
+    background: var(--cv-danger);
+    color: #fff;
+}

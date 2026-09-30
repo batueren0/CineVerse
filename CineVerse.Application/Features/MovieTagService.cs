@@ -30,9 +30,10 @@ public class MovieTagService(IUnitOfWork uow,
         return Result.Success();
     }
 
-    public async Task<Result> DeleteAsync(Guid id)
+    public async Task<Result> DeleteAsync(Guid movieId, Guid tagId)
     {
-        var movieTag = await uow.MovieTags.GetByIdAsync(id);
+
+        var movieTag = await uow.MovieTags.GetByMovieAndTagAsync(movieId, tagId);
         if(movieTag is null)
             return Result.Failure("Movie - Tag connection not found");
 

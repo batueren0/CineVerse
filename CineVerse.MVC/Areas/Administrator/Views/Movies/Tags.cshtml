@@ -1,0 +1,86 @@
+@model MovieResponse
+@{
+    ViewData["Title"] = $"Tags · {Model.Title}";
+
+    // Controller'ın ViewBag.AvailableTags ile gönderdiği, filme HENÜZ eklenmemiş tag'ler
+    var availableTags = ViewBag.AvailableTags as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>();
+}
+
+<div class="admin-page-header">
+    <div>
+        <div class="breadcrumb-lite">
+            <a asp-area="Administrator" asp-controller="Movies" asp-action="Index">Movies</a> / Tags
+        </div>
+        <h1>@Model.Title</h1>
+        <p>@Model.ReleaseYear · @Model.Genre.Name · @Model.Director</p>
+    </div>
+</div>
+
+<div class="cv-panel admin-form">
+    <div class="d-flex gap-3 mb-4">
+        <div class="table-thumb table-thumb-lg">
+            @if (string.IsNullOrEmpty(Model.PosterUrl))
+            {
+                <div class="poster-placeholder"><i class="bi bi-film"></i></div>
+            }
+            else
+            {
+                <img src="@Model.PosterUrl" alt="@Model.Title poster" />
+            }
+        </div>
+
+        <div class="flex-grow-1">
+            <h2 class="cv-panel-title">Current Tags</h2>
+
+            @if (!Model.Tags.Any())
+            {
+                <p class="text-muted-cv mb-0">This movie has no tags yet.</p>
+            }
+            else
+            {
+                <div class="chip-list">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        @* Her tag'in yanındaki × butonu, o bağlantıyı silen küçük bir POST formu *@
+                        <form asp-area="Administrator" asp-controller="Movies" asp-action="RemoveTag" method="post" class="m-0">
+                            <input type="hidden" name="movieId" value="@Model.Id" />
+                            <input type="hidden" name="tagId" value="@tag.Id" />
+                            <span class="chip chip-removable">
+                                <i class="bi bi-hash"></i>@tag.Name
+                                <button type="submit" class="chip-remove" title="Remove &quot;@tag.Name&quot;" aria-label="Remove @tag.Name">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </span>
+                        </form>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <h2 class="cv-panel-title">Add a Tag</h2>
+
+    @if (!availableTags.Any())
+    {
+        <p class="text-muted-cv mb-0">
+            All tags are already added.
+            <a asp-area="Administrator" asp-controller="Tags" asp-action="Create">Create a new tag</a>
+        </p>
+    }
+    else
+    {
+        <form asp-area="Administrator" asp-controller="Movies" asp-action="AddTag" method="post" class="d-flex gap-2">
+            <input type="hidden" name="movieId" value="@Model.Id" />
+            <select name="tagId" asp-items="availableTags" class="form-select" required>
+                <option value="">Select a tag…</option>
+            </select>
+            <button type="submit" class="btn btn-accent text-nowrap"><i class="bi bi-plus-lg me-1"></i>Add</button>
+        </form>
+    }
+
+    <div class="form-actions">
+        <a class="btn btn-ghost" asp-area="Administrator" asp-controller="Movies" asp-action="Index">
+            <i class="bi bi-arrow-left me-1"></i>Back to Movies
+        </a>
+    </div>
+</div>
