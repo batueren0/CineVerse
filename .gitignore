@@ -34,3 +34,6 @@ secrets.json
 # ---- Rider / VS Code (varsa) ----
 .idea/
 .vscode/
+
+# Admin panelinden yüklenen film afişleri (kullanıcı verisi, repoya girmez)
+CineVerse.MVC/wwwroot/uploads/

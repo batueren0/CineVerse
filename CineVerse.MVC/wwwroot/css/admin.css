@@ -366,3 +366,74 @@
     font-size: .88rem;
     font-weight: 500;
 }
+
+/* ==========================================================================
+   Film formu: solda afiş yükleme, sağda alanlar
+   ========================================================================== */
+
+.admin-form-wide {
+    max-width: 980px;
+}
+
+.movie-form {
+    display: grid;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .movie-form {
+        grid-template-columns: 220px 1fr;
+        gap: 2rem;
+    }
+}
+
+.poster-upload {
+    width: 100%;
+    max-width: 220px;
+}
+
+.poster-preview {
+    aspect-ratio: 2 / 3;
+    border-radius: var(--cv-radius-sm);
+    border: 1px dashed var(--cv-border);
+    background: var(--cv-surface-2);
+    overflow: hidden;
+}
+
+.poster-preview img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.poster-preview .poster-placeholder {
+    font-size: 2.5rem;
+}
+
+/* Bootstrap switch'ini temanın sarısına boyuyoruz */
+.form-check-input:checked {
+    background-color: var(--cv-accent);
+    border-color: var(--cv-accent);
+}
+
+.form-check-input:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 .2rem rgba(245, 165, 36, .2);
+}
+
+/* Resim olmayan dosya seçildiğinde önizleme kutusundaki uyarı */
+.poster-preview .poster-invalid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    color: #f08a98;
+    font-size: 2rem;
+}
+
+.poster-preview .poster-invalid span {
+    font-size: .85rem;
+    font-weight: 500;
+}

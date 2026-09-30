@@ -77,7 +77,7 @@ public class MovieRepository : Repository<Movie>, IMovieRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Movie>> GetInTheaterAsync()
+    public async Task<IEnumerable<Movie>> GetInTheatersAsync()
     {
         return await MoviesWithDetails()
             .Where(m => m.IsInTheaters)

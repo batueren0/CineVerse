@@ -13,6 +13,6 @@ public interface IMovieRepository : IRepository<Movie>
     Task<IEnumerable<Movie>> GetRecentAsync();
     Task<IEnumerable<Movie>> GetAllByGenreIdAsync(Guid id);
     Task<IEnumerable<Movie>> GetAllByTagIdAsync(Guid id);
-    Task<IEnumerable<Movie>> GetInTheaterAsync();
+    Task<IEnumerable<Movie>> GetInTheatersAsync();
 
 }

@@ -1,0 +1,116 @@
+@model UpdateMovieRequest
+@{
+    ViewData["Title"] = "Edit Movie";
+
+    // Controller'ın ViewBag.Genres ile gönderdiği tür listesi (dropdown için)
+    var genres = ViewBag.Genres as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>();
+}
+
+<div class="admin-page-header">
+    <div>
+        <div class="breadcrumb-lite">
+            <a asp-area="Administrator" asp-controller="Movies" asp-action="Index">Movies</a> / Edit
+        </div>
+        <h1>Edit Movie</h1>
+    </div>
+</div>
+
+@* Dosya yükleyebilmek için form'un enctype'ı "multipart/form-data" OLMAK ZORUNDA *@
+<form asp-area="Administrator" asp-controller="Movies" asp-action="Update" method="post" enctype="multipart/form-data">
+    <div class="cv-panel admin-form admin-form-wide">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        @* Hangi filmi güncellediğimizi ve mevcut afişin yolunu formla birlikte taşıyan gizli alanlar.
+           Yeni afiş seçilmezse controller eski PosterUrl'i olduğu gibi kullanır. *@
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="PosterUrl" />
+
+        <div class="movie-form">
+            <div class="poster-upload">
+                <div class="poster-preview" id="posterPreview">
+                    @if (string.IsNullOrEmpty(Model?.PosterUrl))
+                    {
+                        <div class="poster-placeholder"><i class="bi bi-image"></i></div>
+                    }
+                    else
+                    {
+                        <img src="@Model.PosterUrl" alt="Current poster" />
+                    }
+                </div>
+                <label for="posterFile" class="btn btn-ghost w-100 mt-3">
+                    <i class="bi bi-upload me-1"></i>@(string.IsNullOrEmpty(Model?.PosterUrl) ? "Choose poster" : "Change poster")
+                </label>
+                <input type="file" id="posterFile" name="posterFile" accept=".jpg,.jpeg,.png,.webp" class="d-none" />
+                <div class="form-text text-muted-cv text-center">JPG, PNG or WEBP · max 2 MB</div>
+            </div>
+
+            <div>
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">Title</label>
+                    <input asp-for="Title" class="form-control" />
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-8">
+                        <label asp-for="Director" class="form-label">Director</label>
+                        <input asp-for="Director" class="form-control" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label asp-for="ReleaseYear" class="form-label">Release Year</label>
+                        <input asp-for="ReleaseYear" type="number" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="GenreId" class="form-label">Genre</label>
+                    <select asp-for="GenreId" asp-items="genres" class="form-select">
+                        <option value="">Select a genre…</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Overview" class="form-label">Overview</label>
+                    <textarea asp-for="Overview" class="form-control" rows="6"></textarea>
+                </div>
+
+                <div class="form-check form-switch">
+                    <input asp-for="IsInTheaters" class="form-check-input" role="switch" />
+                    <label asp-for="IsInTheaters" class="form-check-label">Currently in theaters</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-accent"><i class="bi bi-check-lg me-1"></i>Save Changes</button>
+            <a class="btn btn-ghost" asp-area="Administrator" asp-controller="Movies" asp-action="Index">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        // Yeni seçilen afişi, form gönderilmeden önce tarayıcıda önizleme olarak göster
+        const posterInput = document.getElementById("posterFile");
+        const posterPreview = document.getElementById("posterPreview");
+
+        posterInput.addEventListener("change", () => {
+            const file = posterInput.files[0];
+            if (!file) return;
+
+            // Resim olmayan bir dosya seçildiyse önizleme yerine uyarı göster.
+            // (Asıl kontrol sunucuda, controller'daki SavePosterAsync içinde yapılıyor.)
+            if (!file.type.startsWith("image/")) {
+                const warning = document.createElement("div");
+                warning.className = "poster-placeholder poster-invalid";
+                warning.innerHTML = '<i class="bi bi-file-earmark-x"></i><span>Not an image</span>';
+                posterPreview.replaceChildren(warning);
+                return;
+            }
+
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.alt = "Poster preview";
+            posterPreview.replaceChildren(img);
+        });
+    </script>
+}

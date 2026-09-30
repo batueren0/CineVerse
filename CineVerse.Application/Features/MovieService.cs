@@ -121,9 +121,9 @@ public class MovieService(IUnitOfWork uow,
         return movies.Select(ToResponse);
     }
 
-    public async Task<IEnumerable<MovieResponse>> GetInTheaters()
+    public async Task<IEnumerable<MovieResponse>> GetInTheatersAsync()
     {
-        var movies = await uow.Movies.GetInTheaterAsync();
+        var movies = await uow.Movies.GetInTheatersAsync();
         return movies.Select(ToResponse);
     }
 

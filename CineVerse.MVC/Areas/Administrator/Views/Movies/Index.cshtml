@@ -1,0 +1,94 @@
+@model IEnumerable<MovieResponse>
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>Movies</h1>
+        <p>Add movies, upload their posters and choose what's in theaters.</p>
+    </div>
+    <a class="btn btn-accent" asp-area="Administrator" asp-controller="Movies" asp-action="Create">
+        <i class="bi bi-plus-lg me-1"></i>New Movie
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <i class="bi bi-film"></i>
+        No movies yet. Create the first one to get started.
+    </div>
+}
+else
+{
+    <div class="admin-table-wrap">
+        <div class="table-responsive">
+            <table class="table admin-table table-hover">
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Genre</th>
+                        <th>Year</th>
+                        <th>Status</th>
+                        <th class="text-center">Reviews</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var movie in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="table-thumb">
+                                        @if (string.IsNullOrEmpty(movie.PosterUrl))
+                                        {
+                                            <div class="poster-placeholder"><i class="bi bi-film"></i></div>
+                                        }
+                                        else
+                                        {
+                                            <img src="@movie.PosterUrl" alt="@movie.Title poster" loading="lazy" />
+                                        }
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold">@movie.Title</div>
+                                        <small class="text-muted-cv">@movie.Director</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@movie.Genre.Name</td>
+                            <td>@movie.ReleaseYear</td>
+                            <td>
+                                @if (movie.IsInTheaters)
+                                {
+                                    <span class="chip chip-accent"><i class="bi bi-ticket-perforated"></i>In Theaters</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted-cv">—</span>
+                                }
+                            </td>
+                            <td class="text-center">@movie.Reviews.Count()</td>
+                            <td>
+                                <div class="row-actions">
+                                    <a class="btn btn-ghost btn-icon" title="Edit"
+                                       asp-area="Administrator" asp-controller="Movies" asp-action="Update" asp-route-id="@movie.Id">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    @* Silme işlemi bir link değil, POST ile gönderilen küçük bir form *@
+                                    <form asp-area="Administrator" asp-controller="Movies" asp-action="Delete" asp-route-id="@movie.Id" method="post"
+                                          onsubmit="return confirm('Delete the movie &quot;@movie.Title&quot;?');">
+                                        <button type="submit" class="btn btn-danger-soft btn-icon" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
