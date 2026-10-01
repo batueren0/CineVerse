@@ -107,7 +107,7 @@
                                         <i class="bi @(s <= review.Rating ? "bi-star-fill" : "bi-star")"></i>
                                     }
                                 </span>
-                                <time datetime="@review.CreatedOn.ToString("o")">@review.CreatedOn.ToLocalTime().ToString("dd MMM yyyy")</time>
+                                <time datetime="@review.CreatedOn.ToString("o")">@review.CreatedOn.ToLocalTime().ToString("dd MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)</time>
                             </div>
                             <p class="review-body">@review.Body</p>
                         </div>

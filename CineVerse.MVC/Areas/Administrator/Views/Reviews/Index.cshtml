@@ -55,7 +55,7 @@ else
                                 @* Uzun yorumlar tabloyu bozmasın diye 2 satırda kesiliyor; tamamı üstüne gelince görünüyor *@
                                 <p class="review-excerpt" title="@review.Body">@review.Body</p>
                             </td>
-                            <td class="text-muted-cv text-nowrap">@review.CreatedOn.ToLocalTime().ToString("dd MMM yyyy")</td>
+                            <td class="text-muted-cv text-nowrap">@review.CreatedOn.ToLocalTime().ToString("dd MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)</td>
                             <td>
                                 <div class="row-actions">
                                     <form asp-area="Administrator" asp-controller="Reviews" asp-action="Delete" asp-route-id="@review.Id" method="post"
