@@ -19,4 +19,5 @@ public interface IMovieService
     Task<IEnumerable<MovieResponse>> GetAllByGenreIdAsync(Guid id);
     Task<IEnumerable<MovieResponse>> GetAllByTagIdAsync(Guid id);
     Task<IEnumerable<MovieResponse>> GetInTheatersAsync();
+    Task<MovieResponse?> GetBySlugAsync(string slug);
 }

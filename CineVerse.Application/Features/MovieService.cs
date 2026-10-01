@@ -161,5 +161,14 @@ public class MovieService(IUnitOfWork uow,
                 ))
         );
     }
+
+    public async Task<MovieResponse?> GetBySlugAsync(string slug)
+    {
+        var movie = await uow.Movies.GetBySlugAsync( slug );
+        if (movie is null)
+            return default;
+        
+        return ToResponse( movie );
+    }
 }
 

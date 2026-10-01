@@ -94,4 +94,11 @@ public class MovieRepository : Repository<Movie>, IMovieRepository
     {
         return await _context.Movies.AnyAsync(m => m.GenreId == genreId);
     }
+
+    public async Task<Movie?> GetBySlugAsync(string slug)
+    {
+        return await MoviesWithDetails()
+            .SingleOrDefaultAsync(m => m.Slug == slug);
+           
+    }
 }

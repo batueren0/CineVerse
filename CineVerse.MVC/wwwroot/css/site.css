@@ -823,3 +823,51 @@ a.chip:hover {
         animation: none !important;
     }
 }
+
+/* ==========================================================================
+   Film listesi ve detay sayfası eklemeleri
+   ========================================================================== */
+
+.page-intro {
+    margin-bottom: 2rem;
+}
+
+/* Afişin sağ üst köşesindeki "In Theaters" rozeti */
+.movie-badge {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    padding: .2rem .5rem;
+    border-radius: 999px;
+    background: var(--cv-accent);
+    color: var(--cv-accent-ink);
+    font-size: .7rem;
+    font-weight: 700;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    color: var(--cv-muted);
+    font-size: .9rem;
+    margin-bottom: 1rem;
+}
+
+.back-link:hover {
+    color: var(--cv-accent);
+}
+
+.detail-poster .poster-placeholder {
+    font-size: 3rem;
+}
+
+@media (min-width: 992px) {
+    .review-form-panel {
+        position: sticky;
+        top: 90px;
+    }
+}

@@ -1,0 +1,37 @@
+@*
+    Bu view'ı iki action kullanıyor: Movies/Index (bütün filmler) ve
+    Movies/InTheaters (vizyondakiler). Hangisinden geldiğimize bakıp başlığı değiştiriyoruz.
+*@
+@model IEnumerable<MovieResponse>
+@{
+    var isInTheaters = ViewContext.RouteData.Values["action"]?.ToString() == "InTheaters";
+
+    ViewData["Title"] = isInTheaters ? "In Theaters" : "Movies";
+    var subheading = isInTheaters
+        ? "Movies currently playing in theaters."
+        : "Every movie on CineVerse, newest first.";
+}
+
+<div class="page-intro">
+    <h1 class="page-heading">@ViewData["Title"]</h1>
+    <p class="text-muted-cv mb-0">@subheading</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <i class="bi @(isInTheaters ? "bi-ticket-perforated" : "bi-film")"></i>
+        @(isInTheaters ? "Nothing is playing in theaters right now." : "No movies have been added yet.")
+    </div>
+}
+else
+{
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xl-5 g-3 g-md-4">
+        @foreach (var movie in Model)
+        {
+            <div class="col">
+                <partial name="_MovieCard" model="movie" />
+            </div>
+        }
+    </div>
+}

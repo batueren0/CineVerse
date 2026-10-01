@@ -1,0 +1,163 @@
+@model MovieResponse
+@{
+    ViewData["Title"] = Model.Title;
+
+    var reviewCount = Model.Reviews.Count();
+    var average = reviewCount > 0 ? Model.Reviews.Average(r => r.Rating) : 0;
+    var roundedAverage = (int)Math.Round(average);
+
+    // Giriş yapmamış kullanıcıyı login'e gönderirken, girişten sonra bu sayfaya dönebilmesi için
+    var returnUrl = Context.Request.Path.ToString();
+}
+
+<div class="detail-header">
+    <div class="row g-4 g-lg-5">
+        <div class="col-7 col-sm-5 col-md-4 col-lg-3 mx-auto mx-md-0">
+            <div class="detail-poster">
+                @if (string.IsNullOrEmpty(Model.PosterUrl))
+                {
+                    <div class="poster-placeholder"><i class="bi bi-film"></i></div>
+                }
+                else
+                {
+                    <img src="@Model.PosterUrl" alt="@Model.Title poster" />
+                }
+            </div>
+        </div>
+
+        <div class="col-md-8 col-lg-9">
+            <a class="back-link" asp-area="" asp-controller="Movies" asp-action="Index">
+                <i class="bi bi-arrow-left"></i>All movies
+            </a>
+
+            <div class="chip-list mb-3">
+                <span class="chip chip-accent">@Model.Genre.Name</span>
+                @if (Model.IsInTheaters)
+                {
+                    <span class="chip chip-accent"><i class="bi bi-ticket-perforated"></i>In Theaters</span>
+                }
+            </div>
+
+            <h1 class="page-heading">@Model.Title</h1>
+
+            <div class="detail-facts">
+                <span><i class="bi bi-calendar3 me-1"></i><strong>@Model.ReleaseYear</strong></span>
+                <span><i class="bi bi-camera-reels me-1"></i>Directed by <strong>@Model.Director</strong></span>
+                <span>
+                    @if (reviewCount > 0)
+                    {
+                        <span class="stars me-1">
+                            @for (var s = 1; s <= 5; s++)
+                            {
+                                <i class="bi @(s <= roundedAverage ? "bi-star-fill" : "bi-star")"></i>
+                            }
+                        </span>
+                        <strong>@average.ToString("0.0")</strong>
+                        <span>(@reviewCount @(reviewCount == 1 ? "review" : "reviews"))</span>
+                    }
+                    else
+                    {
+                        <span>No ratings yet</span>
+                    }
+                </span>
+            </div>
+
+            <p class="detail-overview">@Model.Overview</p>
+
+            @if (Model.Tags.Any())
+            {
+                <div class="chip-list mt-4">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <span class="chip"><i class="bi bi-hash"></i>@tag.Name</span>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 g-xl-5">
+    <section class="col-lg-8">
+        <div class="section-title">
+            <h2>Reviews</h2>
+            <span class="text-muted-cv">@reviewCount</span>
+        </div>
+
+        @if (reviewCount == 0)
+        {
+            <div class="empty-state">
+                <i class="bi bi-chat-square-text"></i>
+                No reviews yet. Be the first to share what you think.
+            </div>
+        }
+        else
+        {
+            <div class="cv-panel">
+                @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedOn))
+                {
+                    <div class="review">
+                        <span class="cv-avatar">@(review.UserName.Length > 0 ? review.UserName.Substring(0, 1) : "?")</span>
+                        <div class="flex-grow-1">
+                            <div class="review-head">
+                                <strong>@review.UserName</strong>
+                                <span class="stars">
+                                    @for (var s = 1; s <= 5; s++)
+                                    {
+                                        <i class="bi @(s <= review.Rating ? "bi-star-fill" : "bi-star")"></i>
+                                    }
+                                </span>
+                                <time datetime="@review.CreatedOn.ToString("o")">@review.CreatedOn.ToLocalTime().ToString("dd MMM yyyy")</time>
+                            </div>
+                            <p class="review-body">@review.Body</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+
+    <aside class="col-lg-4">
+        <div class="cv-panel review-form-panel">
+            <h3 class="cv-panel-title">Write a Review</h3>
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <form asp-area="" asp-controller="Reviews" asp-action="Create" method="post">
+                    @* Yorumun hangi filme ait olduğu ve kaydettikten sonra geri döneceğimiz adres *@
+                    <input type="hidden" name="MovieId" value="@Model.Id" />
+                    <input type="hidden" name="slug" value="@Model.Slug" />
+
+                    <div class="mb-3">
+                        <span class="form-label d-block mb-1">Your rating</span>
+                        @* Yıldızlar CSS'te ters sırada (row-reverse) dizildiği için 5'ten 1'e yazıyoruz *@
+                        <div class="star-input">
+                            @for (var s = 5; s >= 1; s--)
+                            {
+                                <input type="radio" id="star-@s" name="Rating" value="@s" required />
+                                <label for="star-@s" title="@s @(s == 1 ? "star" : "stars")"><i class="bi bi-star-fill"></i></label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="review-body">Your review</label>
+                        <textarea id="review-body" name="Body" class="form-control" rows="4" maxlength="1000" required
+                                  placeholder="What did you think about @Model.Title?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-accent w-100">
+                        <i class="bi bi-send me-1"></i>Post Review
+                    </button>
+                </form>
+            }
+            else
+            {
+                <p class="text-muted-cv">Log in to rate this movie and share your review.</p>
+                <a class="btn btn-accent w-100" asp-area="" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@returnUrl">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>Log In
+                </a>
+            }
+        </div>
+    </aside>
+</div>

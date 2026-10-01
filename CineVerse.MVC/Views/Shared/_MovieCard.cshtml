@@ -1,0 +1,39 @@
+@*
+    Tek bir film kartı. Film listesi, "In Theaters" ve ana sayfa gibi
+    birden çok yerde aynı kart kullanılacağı için partial view olarak ayrı duruyor.
+    Kullanımı:  <partial name="_MovieCard" model="movie" />
+*@
+@model MovieResponse
+@{
+    var reviewCount = Model.Reviews.Count();
+    var average = reviewCount > 0 ? Model.Reviews.Average(r => r.Rating) : 0;
+}
+
+<article class="movie-card">
+    <a class="movie-card-link" asp-area="" asp-controller="Movies" asp-action="Details" asp-route-slug="@Model.Slug">
+        <div class="movie-poster">
+            @if (string.IsNullOrEmpty(Model.PosterUrl))
+            {
+                <div class="poster-placeholder"><i class="bi bi-film"></i></div>
+            }
+            else
+            {
+                <img src="@Model.PosterUrl" alt="@Model.Title poster" loading="lazy" />
+            }
+
+            @if (reviewCount > 0)
+            {
+                <span class="movie-rating"><i class="bi bi-star-fill"></i>@average.ToString("0.0")</span>
+            }
+
+            @if (Model.IsInTheaters)
+            {
+                <span class="movie-badge"><i class="bi bi-ticket-perforated"></i>In Theaters</span>
+            }
+        </div>
+        <div class="movie-card-body">
+            <h3 class="movie-title">@Model.Title</h3>
+            <p class="movie-meta">@Model.ReleaseYear · @Model.Genre.Name</p>
+        </div>
+    </a>
+</article>

@@ -61,7 +61,7 @@
                                     <span>@userName</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    @if (User.IsInRole(Roles.Admin))
+                                    @if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Editor))
                                     {
                                         <li>
                                             <a class="dropdown-item" asp-area="Administrator" asp-controller="Home" asp-action="Index">
