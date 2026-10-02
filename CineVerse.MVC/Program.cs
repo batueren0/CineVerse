@@ -64,5 +64,7 @@ app.MapControllerRoute(
 app.MapDefaultControllerRoute();
 
 await DbSeeder.SeedData(app);
+if (app.Environment.IsDevelopment())
+    await DemoDataSeeder.SeedAsync(app);
 
 app.Run();

@@ -1,0 +1,19 @@
+@* GenresViewComponent -> "Dropdown" görünümü: üst menüdeki "Genres" açılır listesi *@
+@model IEnumerable<GenreResponse>
+
+@if (Model.Any())
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Genres
+        </a>
+        <ul class="dropdown-menu">
+            @foreach (var genre in Model)
+            {
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-controller="Movies" asp-action="Genre" asp-route-id="@genre.Id">@genre.Name</a>
+                </li>
+            }
+        </ul>
+    </li>
+}

@@ -31,7 +31,7 @@
             </a>
 
             <div class="chip-list mb-3">
-                <span class="chip chip-accent">@Model.Genre.Name</span>
+                <a class="chip chip-accent" asp-area="" asp-controller="Movies" asp-action="Genre" asp-route-id="@Model.Genre.Id">@Model.Genre.Name</a>
                 @if (Model.IsInTheaters)
                 {
                     <span class="chip chip-accent"><i class="bi bi-ticket-perforated"></i>In Theaters</span>
@@ -69,7 +69,7 @@
                 <div class="chip-list mt-4">
                     @foreach (var tag in Model.Tags)
                     {
-                        <span class="chip"><i class="bi bi-hash"></i>@tag.Name</span>
+                        <a class="chip" asp-area="" asp-controller="Movies" asp-action="Tag" asp-route-id="@tag.Id"><i class="bi bi-hash"></i>@tag.Name</a>
                     }
                 </div>
             }

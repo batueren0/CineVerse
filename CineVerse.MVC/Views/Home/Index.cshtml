@@ -1,205 +1,155 @@
-@*
-    GEÇİCİ TASARIM ÖNİZLEMESİ
-    Bu sayfadaki bütün veriler örnek (sabit) veridir; veritabanından gelmiyor.
-    Amaç, tasarımın nasıl göründüğünü şimdiden görmek. Ana sayfayı gerçek
-    verilerle (MovieService, ViewComponent'ler) yazdığımızda bu dosyayı
-    baştan yazacağız.
-*@
+@model HomeViewModel
 @{
     ViewData["Title"] = "Home";
-
-    var heroMovies = new[]
-    {
-        new { Title = "Inception", Year = 2010, Genre = "Sci-Fi", Director = "Christopher Nolan",
-              Overview = "A thief who steals secrets through dream-sharing technology is given an impossible task: planting an idea into a target's mind.", Fallback = "hero-fallback-1" },
-        new { Title = "Spirited Away", Year = 2001, Genre = "Animation", Director = "Hayao Miyazaki",
-              Overview = "Wandering into a world of spirits, young Chihiro must work in a bathhouse for the gods to find a way to free her parents.", Fallback = "hero-fallback-2" },
-        new { Title = "Whiplash", Year = 2014, Genre = "Drama", Director = "Damien Chazelle",
-              Overview = "A young jazz drummer learns the price of greatness under an instructor who pushes his students far beyond their limits.", Fallback = "hero-fallback-3" }
-    };
-
-    var sampleMovies = new[]
-    {
-        new { Title = "Inception", Year = 2010, Genre = "Sci-Fi", Rating = 4.7 },
-        new { Title = "The Godfather", Year = 1972, Genre = "Crime", Rating = 4.9 },
-        new { Title = "Spirited Away", Year = 2001, Genre = "Animation", Rating = 4.8 },
-        new { Title = "Parasite", Year = 2019, Genre = "Thriller", Rating = 4.6 },
-        new { Title = "Interstellar", Year = 2014, Genre = "Sci-Fi", Rating = 4.5 },
-        new { Title = "Whiplash", Year = 2014, Genre = "Drama", Rating = 4.4 }
-    };
-
-    var sampleReviews = new[]
-    {
-        new { User = "sinefil34", Rating = 5, Date = "2 days ago", Body = "I catch a new detail every time I watch it. The score and editing are flawless." },
-        new { User = "filmgurusu", Rating = 4, Date = "1 week ago", Body = "The last half hour drags a bit, but overall a really enjoyable film." }
-    };
-
-    var sampleGenres = new[] { ("Sci-Fi", 12), ("Drama", 9), ("Animation", 6), ("Thriller", 5), ("Crime", 4) };
-    var sampleTags = new[] { "Nolan", "Oscar", "Classic", "Mind-Bending", "Family", "Music" };
 }
 
 @section Hero {
-    <section class="cv-hero">
-        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                @for (var i = 0; i < heroMovies.Length; i++)
+    @if (Model.Carousel.Any())
+    {
+        var slides = Model.Carousel.ToList();
+
+        <section class="cv-hero">
+            <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                @if (slides.Count > 1)
                 {
-                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i"
-                            class="@(i == 0 ? "active" : "")" aria-label="Slide @(i + 1)"></button>
+                    <div class="carousel-indicators">
+                        @for (var i = 0; i < slides.Count; i++)
+                        {
+                            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i"
+                                    class="@(i == 0 ? "active" : "")" aria-label="Slide @(i + 1)"></button>
+                        }
+                    </div>
                 }
-            </div>
-            <div class="carousel-inner">
-                @for (var i = 0; i < heroMovies.Length; i++)
-                {
-                    var movie = heroMovies[i];
-                    <div class="carousel-item @(i == 0 ? "active" : "")">
-                        <div class="hero-slide @movie.Fallback"></div>
-                        <div class="hero-content">
-                            <div class="container">
-                                <div>
-                                    <span class="hero-kicker"><i class="bi bi-fire"></i>Trending now</span>
-                                    <h1 class="hero-title" lang="en">@movie.Title</h1>
-                                    <div class="hero-meta">
-                                        <span><i class="bi bi-calendar3 me-1"></i>@movie.Year</span>
-                                        <span><i class="bi bi-camera-reels me-1"></i>@movie.Director</span>
-                                        <span class="chip chip-accent">@movie.Genre</span>
+
+                <div class="carousel-inner">
+                    @for (var i = 0; i < slides.Count; i++)
+                    {
+                        var movie = slides[i];
+                        var hasPoster = !string.IsNullOrEmpty(movie.PosterUrl);
+                        var reviewCount = movie.Reviews.Count();
+
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            @* Afiş varsa arka plana bulanık olarak yayılıyor, yoksa renkli bir gradyan kullanılıyor *@
+                            <div class="hero-slide @(hasPoster ? "" : $"hero-fallback-{i % 3 + 1}")">
+                                @if (hasPoster)
+                                {
+                                    <div class="hero-backdrop" style="background-image: url('@movie.PosterUrl')"></div>
+                                }
+                            </div>
+
+                            <div class="hero-content">
+                                <div class="container d-flex align-items-center justify-content-between gap-5">
+                                    <div>
+                                        <span class="hero-kicker">
+                                            <i class="bi bi-fire"></i>@(reviewCount > 0 ? "Most talked about" : "Featured")
+                                        </span>
+                                        <h1 class="hero-title">@movie.Title</h1>
+                                        <div class="hero-meta">
+                                            <span><i class="bi bi-calendar3 me-1"></i>@movie.ReleaseYear</span>
+                                            <span><i class="bi bi-camera-reels me-1"></i>@movie.Director</span>
+                                            <span class="chip chip-accent">@movie.Genre.Name</span>
+                                        </div>
+                                        <p class="hero-overview">@movie.Overview</p>
+                                        <a class="btn btn-accent px-4" asp-controller="Movies" asp-action="Details" asp-route-slug="@movie.Slug">
+                                            <i class="bi bi-play-fill me-1"></i>View Details
+                                        </a>
                                     </div>
-                                    <p class="hero-overview">@movie.Overview</p>
-                                    <a href="#" class="btn btn-accent px-4">
-                                        <i class="bi bi-play-fill me-1"></i>View Details
-                                    </a>
+
+                                    @if (hasPoster)
+                                    {
+                                        <img class="hero-poster d-none d-md-block" src="@movie.PosterUrl" alt="@movie.Title poster" />
+                                    }
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    }
 }
-
-<div class="cv-alert cv-alert-info">
-    <i class="bi bi-palette"></i>This page is a design preview. All data shown is sample data.
-</div>
 
 <div class="row g-4 g-xl-5">
     <div class="col-lg-8">
-        <section class="mb-5">
-            <div class="section-title">
-                <h2>Popular Movies</h2>
-                <a href="#">See all <i class="bi bi-arrow-right"></i></a>
-            </div>
+        @if (Model.InTheaters.Any())
+        {
+            <section class="mb-5">
+                <div class="section-title">
+                    <h2>In Theaters</h2>
+                    <a asp-controller="Movies" asp-action="InTheaters">See all <i class="bi bi-arrow-right"></i></a>
+                </div>
 
-            <div class="row row-cols-2 row-cols-md-3 g-3 g-md-4">
-                @foreach (var movie in sampleMovies)
-                {
-                    <div class="col">
-                        <article class="movie-card">
-                            <a href="#" class="movie-card-link">
-                                <div class="movie-poster">
-                                    <div class="poster-placeholder"><i class="bi bi-film"></i></div>
-                                    <span class="movie-rating"><i class="bi bi-star-fill"></i>@movie.Rating.ToString("0.0")</span>
-                                </div>
-                                <div class="movie-card-body">
-                                    <h3 class="movie-title">@movie.Title</h3>
-                                    <p class="movie-meta">@movie.Year · @movie.Genre</p>
-                                </div>
-                            </a>
-                        </article>
-                    </div>
-                }
-            </div>
-        </section>
+                <div class="row row-cols-2 row-cols-md-3 g-3 g-md-4">
+                    @foreach (var movie in Model.InTheaters)
+                    {
+                        <div class="col">
+                            <partial name="_MovieCard" model="movie" />
+                        </div>
+                    }
+                </div>
+            </section>
+        }
 
         <section>
             <div class="section-title">
-                <h2>Latest Reviews</h2>
+                <h2>Latest Movies</h2>
+                <a asp-controller="Movies" asp-action="Index">See all <i class="bi bi-arrow-right"></i></a>
             </div>
 
-            <div class="cv-panel">
-                @foreach (var review in sampleReviews)
-                {
-                    <div class="review">
-                        <span class="cv-avatar">@review.User.Substring(0, 1)</span>
-                        <div class="flex-grow-1">
-                            <div class="review-head">
-                                <strong>@review.User</strong>
-                                <span class="stars">
-                                    @for (var s = 1; s <= 5; s++)
-                                    {
-                                        <i class="bi @(s <= review.Rating ? "bi-star-fill" : "bi-star")"></i>
-                                    }
-                                </span>
-                                <time>@review.Date</time>
-                            </div>
-                            <p class="review-body">@review.Body</p>
+            @if (!Model.Latest.Any())
+            {
+                <div class="empty-state">
+                    <i class="bi bi-film"></i>
+                    No movies have been added yet.
+                </div>
+            }
+            else
+            {
+                <div class="row row-cols-2 row-cols-md-3 g-3 g-md-4">
+                    @foreach (var movie in Model.Latest)
+                    {
+                        <div class="col">
+                            <partial name="_MovieCard" model="movie" />
                         </div>
-                    </div>
-                }
-            </div>
-
-            <div class="cv-panel mt-4">
-                <h3 class="cv-panel-title">Write a Review</h3>
-                <form onsubmit="return false;">
-                    <div class="mb-3">
-                        <span class="form-label d-block mb-1">Your rating</span>
-                        <div class="star-input">
-                            @for (var s = 5; s >= 1; s--)
-                            {
-                                <input type="radio" id="preview-star-@s" name="preview-rating" value="@s" />
-                                <label for="preview-star-@s" title="@s stars"><i class="bi bi-star-fill"></i></label>
-                            }
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="preview-body">Your review</label>
-                        <textarea id="preview-body" class="form-control" rows="3" placeholder="What did you think of the movie?"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-accent">Submit</button>
-                </form>
-            </div>
+                    }
+                </div>
+            }
         </section>
     </div>
 
     <aside class="col-lg-4">
-        <div class="cv-panel">
-            <h3 class="cv-panel-title">Recently Added</h3>
-            <ul class="mini-list">
-                @foreach (var movie in sampleMovies.Take(3))
-                {
-                    <li>
-                        <a href="#" class="mini-item">
-                            <span class="mini-thumb"><span class="poster-placeholder"><i class="bi bi-film"></i></span></span>
-                            <span>
-                                <strong>@movie.Title</strong>
-                                <small>@movie.Year · @movie.Genre</small>
-                            </span>
-                        </a>
-                    </li>
-                }
-            </ul>
-        </div>
-
-        <div class="cv-panel">
-            <h3 class="cv-panel-title">Genres</h3>
-            <ul class="link-list">
-                @foreach (var (name, count) in sampleGenres)
-                {
-                    <li>
-                        <a href="#"><span>@name</span><span class="text-muted-cv">@count</span></a>
-                    </li>
-                }
-            </ul>
-        </div>
-
-        <div class="cv-panel">
-            <h3 class="cv-panel-title">Tags</h3>
-            <div class="chip-list">
-                @foreach (var tag in sampleTags)
-                {
-                    <a href="#" class="chip"><i class="bi bi-hash"></i>@tag</a>
-                }
+        @if (Model.Recent.Any())
+        {
+            <div class="cv-panel">
+                <h3 class="cv-panel-title">Just Added</h3>
+                <ul class="mini-list">
+                    @foreach (var movie in Model.Recent)
+                    {
+                        <li>
+                            <a class="mini-item" asp-controller="Movies" asp-action="Details" asp-route-slug="@movie.Slug">
+                                <span class="mini-thumb">
+                                    @if (string.IsNullOrEmpty(movie.PosterUrl))
+                                    {
+                                        <span class="poster-placeholder"><i class="bi bi-film"></i></span>
+                                    }
+                                    else
+                                    {
+                                        <img src="@movie.PosterUrl" alt="" loading="lazy" />
+                                    }
+                                </span>
+                                <span>
+                                    <strong>@movie.Title</strong>
+                                    <small>@movie.ReleaseYear · @movie.Genre.Name</small>
+                                </span>
+                            </a>
+                        </li>
+                    }
+                </ul>
             </div>
-        </div>
+        }
+
+        @* Bu iki kutunun verisi controller'dan değil, kendi ViewComponent'lerinden geliyor *@
+        @await Component.InvokeAsync("Genres")
+        @await Component.InvokeAsync("Tags")
     </aside>
 </div>

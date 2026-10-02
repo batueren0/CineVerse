@@ -1,19 +1,26 @@
 @*
-    Bu view'ı iki action kullanıyor: Movies/Index (bütün filmler) ve
-    Movies/InTheaters (vizyondakiler). Hangisinden geldiğimize bakıp başlığı değiştiriyoruz.
+    Bu view'ı dört action kullanıyor: Index (bütün filmler), InTheaters (vizyondakiler),
+    Genre ve Tag (bir türün / etiketin filmleri). Genre ve Tag sayfalarında başlığı
+    controller ViewData["Heading"] ile gönderiyor; diğerlerinde action'a bakıp kendimiz seçiyoruz.
 *@
 @model IEnumerable<MovieResponse>
 @{
-    var isInTheaters = ViewContext.RouteData.Values["action"]?.ToString() == "InTheaters";
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+    var isInTheaters = action == "InTheaters";
 
-    ViewData["Title"] = isInTheaters ? "In Theaters" : "Movies";
-    var subheading = isInTheaters
+    var heading = ViewData["Heading"] as string ?? (isInTheaters ? "In Theaters" : "Movies");
+    var subheading = ViewData["Subheading"] as string ?? (isInTheaters
         ? "Movies currently playing in theaters."
-        : "Every movie on CineVerse, newest first.";
+        : "Every movie on CineVerse, newest first.");
+    var emptyMessage = isInTheaters
+        ? "Nothing is playing in theaters right now."
+        : "No movies here yet.";
+
+    ViewData["Title"] = heading;
 }
 
 <div class="page-intro">
-    <h1 class="page-heading">@ViewData["Title"]</h1>
+    <h1 class="page-heading">@heading</h1>
     <p class="text-muted-cv mb-0">@subheading</p>
 </div>
 
@@ -21,7 +28,7 @@
 {
     <div class="empty-state">
         <i class="bi @(isInTheaters ? "bi-ticket-perforated" : "bi-film")"></i>
-        @(isInTheaters ? "Nothing is playing in theaters right now." : "No movies have been added yet.")
+        @emptyMessage
     </div>
 }
 else

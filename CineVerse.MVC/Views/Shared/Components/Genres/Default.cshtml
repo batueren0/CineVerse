@@ -1,0 +1,20 @@
+@* GenresViewComponent -> varsayılan görünüm: ana sayfa kenar çubuğundaki tür listesi *@
+@model IEnumerable<GenreResponse>
+
+@if (Model.Any())
+{
+    <div class="cv-panel">
+        <h3 class="cv-panel-title">Genres</h3>
+        <ul class="link-list">
+            @foreach (var genre in Model)
+            {
+                <li>
+                    <a asp-area="" asp-controller="Movies" asp-action="Genre" asp-route-id="@genre.Id">
+                        <span>@genre.Name</span>
+                        <i class="bi bi-chevron-right text-muted-cv"></i>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+}

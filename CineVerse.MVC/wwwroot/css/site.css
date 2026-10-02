@@ -871,3 +871,42 @@ a.chip:hover {
         top: 90px;
     }
 }
+
+/* ==========================================================================
+   Ana sayfa vitrini: gerçek afişlerle
+   ========================================================================== */
+
+/* Afiş, slaytın arka planına bulanık ve karartılmış olarak yayılıyor */
+.hero-backdrop {
+    position: absolute;
+    inset: -40px;                      /* bulanıklığın kenarlarda boşluk bırakmaması için taşırıyoruz */
+    background-size: cover;
+    background-position: center;
+    filter: blur(28px) brightness(.55) saturate(1.2);
+}
+
+.hero-slide {
+    overflow: hidden;
+}
+
+/* Sağ tarafta afişin net hali */
+.hero-poster {
+    width: 220px;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    flex-shrink: 0;
+    border-radius: var(--cv-radius);
+    border: 1px solid rgba(255, 255, 255, .08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .55);
+}
+
+@media (min-width: 1200px) {
+    .hero-poster {
+        width: 260px;
+    }
+}
+
+.chip:hover {
+    color: var(--cv-accent);
+    border-color: rgba(245, 165, 36, .4);
+}

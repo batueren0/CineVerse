@@ -1,0 +1,17 @@
+@* TagsViewComponent -> ana sayfa kenar çubuğundaki etiket bulutu *@
+@model IEnumerable<TagResponse>
+
+@if (Model.Any())
+{
+    <div class="cv-panel">
+        <h3 class="cv-panel-title">Tags</h3>
+        <div class="chip-list">
+            @foreach (var tag in Model)
+            {
+                <a class="chip" asp-area="" asp-controller="Movies" asp-action="Tag" asp-route-id="@tag.Id">
+                    <i class="bi bi-hash"></i>@tag.Name
+                </a>
+            }
+        </div>
+    </div>
+}

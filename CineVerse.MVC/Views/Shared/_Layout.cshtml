@@ -48,7 +48,8 @@
                             <a class="nav-link @(currentController == "Movies" && currentAction == "InTheaters" ? "active" : "")"
                                asp-area="" asp-controller="Movies" asp-action="InTheaters">In Theaters</a>
                         </li>
-                        @* İleride buraya "Türler" açılır menüsü gelecek (ViewComponent ile). *@
+                        @* Tür listesini her sayfada göstermek için ViewComponent kullanıyoruz *@
+                        @await Component.InvokeAsync("Genres", new { viewName = "Dropdown" })
                     </ul>
 
                     <ul class="navbar-nav align-items-lg-center gap-2">
